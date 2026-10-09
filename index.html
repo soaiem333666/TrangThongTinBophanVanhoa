@@ -3,302 +3,413 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bộ Phận Văn Hoá - Phường An Cựu</title>
+    <title>Cổng Thông Tin Điện Tử - Phường An Cựu</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .bg-custom { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        /* Custom Styling for Portal */
+        .banner-hue-bg {
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.05) 0%, rgba(59, 130, 246, 0.1) 100%), 
+                        url('https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+        }
+        .header-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+        }
+        .propaganda-red {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        }
     </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-800">
+<body class="bg-slate-100 font-sans text-slate-800 leading-normal">
 
-    <!-- Header / Thanh điều hướng (Đã bỏ biểu tượng/Quốc huy) -->
-    <header class="bg-custom text-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div>
-                <h1 class="font-bold text-xl leading-tight tracking-wide text-white">BỘ PHẬN VĂN HOÁ - XÃ HỘI</h1>
-                <p class="text-xs text-blue-200 mt-0.5">TT Dịch vụ Sự nghiệp công Phường An Cựu</p>
-            </div>
-            <div id="userStatus" class="flex items-center space-x-3">
-                <!-- Nơi hiển thị trạng thái đăng nhập -->
+    <!-- ==================== 1. BANNER HEADER TRÊN CÙNG ==================== -->
+    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
+        <!-- Banner Hình ảnh Huế & Tên cơ quan -->
+        <div class="banner-hue-bg border-b border-blue-100">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center space-x-4 text-center md:text-left">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-wider text-red-700">TRANG THÔNG TIN ĐIỆN TỬ</p>
+                        <h1 class="text-2xl md:text-3xl font-black text-blue-900 tracking-tight">Phường An Cựu</h1>
+                        <p class="text-xs text-slate-600 font-medium">UBND PHƯỜNG AN CỰU - THÀNH PHỐ HUẾ</p>
+                    </div>
+                </div>
+
+                <!-- Góc đăng nhập cán bộ / Trạng thái -->
+                <div id="userHeaderStatus" class="flex items-center gap-2">
+                    <!-- JS sẽ render trạng thái vào đây -->
+                </div>
             </div>
         </div>
+
+        <!-- Thanh Menu điều hướng Responsive -->
+        <nav class="bg-blue-900 text-white shadow">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-between items-center h-12">
+                    <!-- Menu PC -->
+                    <div class="hidden md:flex space-x-1 text-sm font-semibold uppercase">
+                        <a href="#trangchu" class="px-4 py-3 bg-blue-800 text-yellow-300 border-b-2 border-yellow-400 flex items-center gap-2">
+                            <i class="fa-solid fa-house"></i> Trang chủ
+                        </a>
+                        <a href="#chinhquyen" class="px-4 py-3 hover:bg-blue-800 transition">Chính quyền</a>
+                        <a href="#congdan" class="px-4 py-3 hover:bg-blue-800 transition">Công dân</a>
+                        <a href="#doanhnghiep" class="px-4 py-3 hover:bg-blue-800 transition">Doanh nghiệp</a>
+                        <a href="#lichcongtac" class="px-4 py-3 hover:bg-blue-800 transition text-yellow-200">Lịch Công Tác</a>
+                        <a href="#diemdanh" class="px-4 py-3 hover:bg-blue-800 transition text-emerald-300"><i class="fa-solid fa-user-check mr-1"></i>Điểm Danh</a>
+                    </div>
+
+                    <!-- Nút Mobile Menu (Hamburger) -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden text-white p-2 focus:outline-none flex items-center gap-2">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                        <span class="text-sm font-semibold">DANH MỤC</span>
+                    </button>
+
+                    <!-- Tìm kiếm -->
+                    <div class="relative hidden sm:block">
+                        <input type="text" placeholder="Tìm kiếm thông tin..." class="bg-blue-950 text-xs text-white px-3 py-1.5 rounded-full pl-8 focus:outline-none focus:ring-1 focus:ring-yellow-400 w-48">
+                        <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2 text-xs text-slate-400"></i>
+                    </div>
+                </div>
+
+                <!-- Menu xổ ra trên Điện thoại -->
+                <div id="mobileMenu" class="hidden md:hidden pb-3 space-y-1 text-sm uppercase font-semibold border-t border-blue-800 pt-2">
+                    <a href="#trangchu" class="block px-3 py-2 bg-blue-800 text-yellow-300 rounded">Trang chủ</a>
+                    <a href="#chinhquyen" class="block px-3 py-2 hover:bg-blue-800 rounded">Chính quyền</a>
+                    <a href="#congdan" class="block px-3 py-2 hover:bg-blue-800 rounded">Công dân</a>
+                    <a href="#lichcongtac" class="block px-3 py-2 hover:bg-blue-800 text-yellow-200 rounded">Lịch Công Tác</a>
+                    <a href="#diemdanh" class="block px-3 py-2 hover:bg-blue-800 text-emerald-300 rounded">Điểm Danh Cán Bộ</a>
+                </div>
+            </div>
+        </nav>
     </header>
 
-    <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <!-- ==================== 2. NỘI DUNG CHÍNH (MAIN PORTAL) ==================== -->
+    <main class="max-w-7xl mx-auto px-4 py-6 space-y-8">
 
-        <!-- Cột trái: Đăng nhập & Điểm danh cán bộ -->
-        <div class="lg:col-span-1 space-y-6">
+        <!-- SECTION 1: TIN NỔI BẬT & CỘT THÔNG TIN CHÍNH QUYỀN (GIỐNG HÌNH MẪU) -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <!-- Card 1: Form Đăng nhập & Bảng Điều Khiển Cán Bộ -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-                <h2 class="font-bold text-slate-700 text-md mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-user-lock text-blue-600"></i> Tài Khoản Cán Bộ
-                </h2>
-
-                <!-- Form đăng nhập tài khoản + mật khẩu -->
-                <div id="loginForm" class="space-y-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tên tài khoản:</label>
-                        <input type="text" id="usernameInput" placeholder="Nhập tài khoản (vd: anhkhoaancuu)" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Mật khẩu:</label>
-                        <input type="password" id="passwordInput" placeholder="Nhập mật khẩu" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                    </div>
-                    <div id="loginError" class="text-xs text-rose-600 hidden font-medium">Tài khoản hoặc mật khẩu không chính xác!</div>
-                    <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg text-sm shadow transition flex justify-center items-center gap-2">
-                        <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập
-                    </button>
+            <!-- Cột trái & giữa: Slider Tin tức tiêu điểm (8 Cột) -->
+            <div class="lg:col-span-8 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-2 mb-4">
+                    <h2 class="text-red-700 font-bold uppercase text-sm flex items-center gap-2">
+                        <span class="w-2 h-4 bg-red-600 inline-block rounded-sm"></span> TIN MỚI NHẤT
+                    </h2>
+                    <span class="text-xs text-slate-400">Cập nhật liên tục</span>
                 </div>
 
-                <!-- Bảng chức năng khi đã đăng nhập -->
-                <div id="checkinPanel" class="hidden space-y-4">
-                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100 relative">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-xs text-slate-500">Xin chào cán bộ:</p>
-                                <p id="currentUserName" class="font-bold text-blue-900 text-base"></p>
-                            </div>
-                            <span id="roleBadge" class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full"></span>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                    <!-- Tin chính lớn -->
+                    <div class="md:col-span-7 group cursor-pointer">
+                        <div class="relative overflow-hidden rounded-lg aspect-video mb-3">
+                            <img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=800&q=80" alt="Tin chính" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                            <span class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded">Nổi bật</span>
                         </div>
-                        <p id="currentTime" class="text-xs text-slate-500 mt-2 border-t border-blue-100 pt-1.5"></p>
+                        <h3 class="font-bold text-slate-800 group-hover:text-blue-600 transition text-base leading-snug">
+                            PHÁT BIỂU CHỈ ĐẠO CỦA LÃNH ĐẠO TẠI HỘI NGHỊ NGHỊ NGHỊ QUYẾT PHÁT TRIỂN KINH TẾ - XÃ HỘI
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-1"><i class="fa-regular fa-clock mr-1"></i>09/10/2026</p>
+                        <p class="text-xs text-slate-600 mt-2 line-clamp-2">Sáng nay, UBND Phường An Cựu tổ chức hội nghị triển khai nhiệm vụ công tác văn hóa xã hội và phát triển hạ tầng đô thị trên địa bàn...</p>
                     </div>
 
-                    <!-- Nút Điểm danh -->
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="doCheckIn('Sáng')" class="bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-lg text-xs font-semibold text-center shadow transition">
-                            <i class="fa-solid fa-sun block text-lg mb-1"></i> Điểm danh Sáng
-                        </button>
-                        <button onclick="doCheckIn('Chiều')" class="bg-amber-600 hover:bg-amber-700 text-white p-3 rounded-lg text-xs font-semibold text-center shadow transition">
-                            <i class="fa-solid fa-cloud-sun block text-lg mb-1"></i> Điểm danh Chiều
-                        </button>
+                    <!-- Danh sách tin phụ bên cạnh -->
+                    <div class="md:col-span-5 space-y-3 divide-y divide-slate-100">
+                        <div class="flex gap-3 pt-2 first:pt-0 cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=200&q=80" class="w-20 h-14 object-cover rounded flex-shrink-0">
+                            <div>
+                                <h4 class="text-xs font-semibold text-slate-800 group-hover:text-blue-600 line-clamp-2">Hội nghị Ban chấp hành Đảng bộ Phường lần thứ 12</h4>
+                                <span class="text-[10px] text-slate-400">08/10/2026</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 pt-2 cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=200&q=80" class="w-20 h-14 object-cover rounded flex-shrink-0">
+                            <div>
+                                <h4 class="text-xs font-semibold text-slate-800 group-hover:text-blue-600 line-clamp-2">Tuyên truyền kỷ niệm Ngày lễ lớn và phong trào văn hóa toàn dân</h4>
+                                <span class="text-[10px] text-slate-400">07/10/2026</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 pt-2 cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=200&q=80" class="w-20 h-14 object-cover rounded flex-shrink-0">
+                            <div>
+                                <h4 class="text-xs font-semibold text-slate-800 group-hover:text-blue-600 line-clamp-2">Thường trực Đảng ủy kiểm tra công tác các tổ dân phố</h4>
+                                <span class="text-[10px] text-slate-400">06/10/2026</span>
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- Khu vực dành riêng cho Admin (Trần Anh Khoa) -->
-                    <div id="adminControls" class="hidden pt-2 border-t border-slate-200">
-                        <p class="text-xs font-bold text-purple-800 mb-2 flex items-center gap-1">
-                            <i class="fa-solid fa-user-shield text-purple-600"></i> Bảng quản trị Admin:
-                        </p>
-                        <button onclick="viewCheckinHistory()" class="w-full bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 py-2 rounded-lg text-xs font-medium transition mb-2 flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-list-check"></i> Xem nhật ký điểm danh
-                        </button>
-                    </div>
-
-                    <button onclick="logout()" class="w-full text-slate-400 hover:text-rose-600 text-xs py-1 transition flex items-center justify-center gap-1">
-                        <i class="fa-solid fa-power-off"></i> Đăng xuất tài khoản
-                    </button>
                 </div>
             </div>
 
-            <!-- Card 2: Thông báo nhanh -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-                <h2 class="font-bold text-slate-700 text-md mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-bell text-amber-500"></i> Thông Báo Bộ Phận
-                </h2>
-                <ul class="text-xs space-y-2.5 text-slate-600">
-                    <li class="p-2 bg-slate-50 rounded border-l-2 border-blue-500">
-                        <b>Chào cờ đầu tuần:</b> 7h30 Thứ Hai tập trung tại Ủy ban Phường.
-                    </li>
-                    <li class="p-2 bg-slate-50 rounded border-l-2 border-emerald-500">
-                        <b>Vệ sinh cơ quan:</b> Chiều Thứ Sáu dọn dẹp kho bãi vật tư VHXH.
-                    </li>
-                </ul>
-            </div>
-        </div>
+            <!-- Cột phải: Menu Thông tin Chính quyền & Bando (4 Cột - Giống hình) -->
+            <div class="lg:col-span-4 space-y-4">
+                <!-- Box Menu Chính quyền -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="bg-blue-900 text-white p-3 font-bold text-xs uppercase tracking-wider flex items-center justify-between">
+                        <span><i class="fa-solid fa-sitemap mr-1"></i> Thông Tin Chính Quyền</span>
+                    </div>
+                    <ul class="divide-y divide-slate-100 text-xs font-medium text-slate-700">
+                        <li><a href="#" class="p-3 hover:bg-blue-50 hover:text-blue-700 flex justify-between items-center transition"><span> Giới thiệu chung</span> <i class="fa-solid fa-angle-right text-slate-300"></i></a></li>
+                        <li><a href="#" class="p-3 hover:bg-blue-50 hover:text-blue-700 flex justify-between items-center transition"><span> Bản đồ hành chính</span> <i class="fa-solid fa-angle-right text-slate-300"></i></a></li>
+                        <li><a href="#" class="p-3 hover:bg-blue-50 hover:text-blue-700 flex justify-between items-center transition"><span> Tổ chức bộ máy</span> <i class="fa-solid fa-angle-right text-slate-300"></i></a></li>
+                        <li><a href="#lichcongtac" class="p-3 hover:bg-blue-50 hover:text-blue-700 flex justify-between items-center text-blue-800 font-bold transition"><span> Lịch công tác tuần</span> <i class="fa-solid fa-angle-right text-blue-500"></i></a></li>
+                        <li><a href="#" class="p-3 hover:bg-blue-50 hover:text-blue-700 flex justify-between items-center transition"><span> Danh bạ điện thoại</span> <i class="fa-solid fa-angle-right text-slate-300"></i></a></li>
+                    </ul>
+                </div>
 
-        <!-- Cột phải: Báo cáo Lịch làm việc tuần -->
-        <div class="lg:col-span-3 space-y-6">
+                <!-- Banner Bản đồ / Hình ảnh tiện ích -->
+                <div class="bg-white p-2 rounded-xl shadow-sm border border-slate-200">
+                    <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=600&q=80" alt="Bản đồ An Cựu" class="w-full h-32 object-cover rounded-lg">
+                    <p class="text-[11px] text-center font-bold text-slate-600 mt-1.5">BẢN ĐỒ HÀNH CHÍNH PHƯỜNG AN CỰU</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: BANNER TUYÊN TRUYỀN KHỔ LỚN (GIỐNG ĐÚNG HÌNH MẪU 2 BANNER ĐỎ) -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="propaganda-red text-white p-4 rounded-xl shadow-md flex items-center justify-between border-2 border-yellow-400">
+                <div>
+                    <span class="text-xs font-bold text-yellow-300 uppercase block">★ ĐẢNG CỘNG SẢN VIỆT NAM ★</span>
+                    <h3 class="font-black text-lg text-yellow-300 tracking-wide mt-0.5">CHÀO MỪNG ĐẠI HỘI ĐẢNG</h3>
+                    <p class="text-[11px] text-red-100">ĐẢNG BỘ CÁC CẤP TIẾN TỚI ĐẠI HỘI ĐẠI BIỂU TOÀN QUỐC</p>
+                </div>
+                <i class="fa-solid fa-star text-4xl text-yellow-400 opacity-80"></i>
+            </div>
+
+            <div class="propaganda-red text-white p-4 rounded-xl shadow-md flex items-center justify-between border-2 border-yellow-400">
+                <div>
+                    <span class="text-xs font-bold text-yellow-300 uppercase block">★ BẦU CỬ ĐẠI BIỂU QUỐC HỘI ★</span>
+                    <h3 class="font-black text-lg text-yellow-300 tracking-wide mt-0.5">NỔI BẬT NHIỆM KỲ 2026 - 2031</h3>
+                    <p class="text-[11px] text-red-100">XÂY DỰNG PHƯỜNG AN CỰU NGHĨA TÌNH, VĂN MINH</p>
+                </div>
+                <i class="fa-solid fa-flag text-4xl text-yellow-400 opacity-80"></i>
+            </div>
+        </section>
+
+        <!-- SECTION 3: KHU VỰC QUẢN TRỊ - ĐIỂM DANH & LỊCH LÀM VIỆC CÁN BỘ -->
+        <section id="diemdanh" class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-4 border-t border-slate-200">
             
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 mb-4 border-b border-slate-100 gap-2">
-                    <div>
-                        <h2 class="font-bold text-slate-800 text-lg flex items-center gap-2">
-                            <i class="fa-solid fa-calendar-week text-blue-600"></i> Báo Cáo Lịch Làm Việc Tuần
+            <!-- Cột trái: Đăng nhập & Điểm danh cán bộ (4 Cột) -->
+            <div class="lg:col-span-4 space-y-4">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                    <div class="flex items-center justify-between mb-4 border-b pb-2">
+                        <h2 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-user-lock text-blue-600"></i> ĐĂNG NHẬP / ĐIỂM DANH
                         </h2>
-                        <p class="text-xs text-slate-500">Cập nhật trực tiếp từ hệ thống Google Sheets</p>
+                        <span class="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">Nội bộ</span>
                     </div>
-                    <a href="https://docs.google.com/spreadsheets/d/1HEERG29ikaAdlv6DJpI9q6YclAKvOpfC60EpGOYSkfs/edit?usp=sharing" target="_blank" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-3 py-1.5 rounded-md transition flex items-center gap-1">
-                        <i class="fa-solid fa-file-excel text-emerald-600"></i> Mở File Gốc
-                    </a>
-                </div>
 
-                <!-- Bảng Lịch làm việc -->
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs border-collapse min-w-[700px]">
-                        <thead>
-                            <tr class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
-                                <th class="p-3 w-32 border-r">Cán Bộ</th>
-                                <th class="p-3 w-20 border-r">Buổi</th>
-                                <th class="p-3 border-r bg-blue-50/50">Thứ 2</th>
-                                <th class="p-3 border-r">Thứ 3</th>
-                                <th class="p-3 border-r">Thứ 4</th>
-                                <th class="p-3 border-r">Thứ 5</th>
-                                <th class="p-3 border-r">Thứ 6</th>
-                                <th class="p-3 border-r">Thứ 7</th>
-                                <th class="p-3">Chủ Nhật</th>
-                            </tr>
-                        </thead>
-                        <tbody id="scheduleTableBody" class="divide-y divide-slate-200">
-                            <!-- Nguyễn Bỉnh Minh Khuê -->
-                            <tr>
-                                <td rowspan="2" class="p-3 font-semibold text-slate-800 bg-slate-50/50 border-r">Nguyễn Bỉnh Minh Khuê</td>
-                                <td class="p-2 font-medium text-amber-700 bg-amber-50/30 border-r">SÁNG</td>
-                                <td class="p-2 border-r">7h30: Chào cờ tại UB<br>8h: Làm việc tại Trung tâm</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
-                                <td class="p-2 border-r">8h: Ngày Quốc tế Người cao tuổi tại NVH KV6</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
-                                <td class="p-2 border-r">7h00: Khảo sát các tổ dân phố cùng Chủ tịch</td>
-                                <td class="p-2"></td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="p-2 font-medium text-blue-700 bg-blue-50/30 border-r">CHIỀU</td>
-                                <td class="p-2 border-r">13h30: Sơ kết phát triển KT-XH</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
-                                <td class="p-2 border-r"></td>
-                                <td class="p-2"></td>
-                            </tr>
+                    <!-- Form Đăng Nhập -->
+                    <div id="loginForm" class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Tài khoản cán bộ:</label>
+                            <input type="text" id="usernameInput" placeholder="Ví dụ: anhkhoaancuu" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Mật khẩu:</label>
+                            <input type="password" id="passwordInput" placeholder="Nhập mật khẩu" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                        <div id="loginError" class="text-xs text-rose-600 hidden font-medium">Tài khoản hoặc mật khẩu không chính xác!</div>
+                        <button onclick="handleLogin()" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2.5 rounded-lg text-xs shadow transition flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP
+                        </button>
+                    </div>
 
-                            <!-- Hoàng Quốc Tuấn -->
-                            <tr>
-                                <td rowspan="2" class="p-3 font-semibold text-slate-800 bg-slate-50/50 border-r">Hoàng Quốc Tuấn</td>
-                                <td class="p-2 font-medium text-amber-700 bg-amber-50/30 border-r">SÁNG</td>
-                                <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc tại TT</td>
-                                <td class="p-2 border-r">Họp tại UBND</td>
-                                <td class="p-2 border-r">In GCN, làm Pano Lễ hội Quang Trung</td>
-                                <td class="p-2 border-r">Lập KH & dự trù kinh phí Trại sáng tác 2026</td>
-                                <td class="p-2 border-r">Thiết kế Pano, làm việc với Viettel</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
-                                <td class="p-2"></td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="p-2 font-medium text-blue-700 bg-blue-50/30 border-r">CHIỀU</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
-                                <td class="p-2 border-r">Họp tại UBND "Quang Trung"</td>
-                                <td class="p-2 border-r">Lập KH & dự trù kinh phí Trại sáng tác 2026</td>
-                                <td class="p-2 border-r">Sắp kho bãi vật tư VHXH, vệ sinh</td>
-                                <td class="p-2 border-r"></td>
-                                <td class="p-2"></td>
-                            </tr>
+                    <!-- Bảng Điều Khiển Cán Bộ -->
+                    <div id="checkinPanel" class="hidden space-y-4">
+                        <div class="p-3 bg-blue-50 rounded-lg border border-blue-100">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="text-[11px] text-slate-500">Cán bộ công tác:</p>
+                                    <p id="currentUserName" class="font-bold text-blue-900 text-sm"></p>
+                                </div>
+                                <span id="roleBadge" class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full"></span>
+                            </div>
+                            <p id="currentTime" class="text-xs text-slate-500 mt-2 border-t border-blue-100 pt-1.5"></p>
+                        </div>
 
-                            <!-- Lê Nguyên Vũ -->
-                            <tr>
-                                <td rowspan="2" class="p-3 font-semibold text-slate-800 bg-slate-50/50 border-r">Lê Nguyên Vũ</td>
-                                <td class="p-2 font-medium text-amber-700 bg-amber-50/30 border-r">SÁNG</td>
-                                <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc tại TT</td>
-                                <td class="p-2 border-r">Thanh quyết toán giải vật</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
-                                <td class="p-2"></td>
-                            </tr>
-                            <tr class="border-b">
-                                <td class="p-2 font-medium text-blue-700 bg-blue-50/30 border-r">CHIỀU</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
-                                <td class="p-2 border-r">Xây dựng báo cáo phát thanh</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
-                                <td class="p-2 border-r"></td>
-                                <td class="p-2"></td>
-                            </tr>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="doCheckIn('Sáng')" class="bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-lg text-xs font-semibold text-center shadow transition">
+                                <i class="fa-solid fa-sun block text-base mb-1"></i> Điểm danh SÁNG
+                            </button>
+                            <button onclick="doCheckIn('Chiều')" class="bg-amber-600 hover:bg-amber-700 text-white p-3 rounded-lg text-xs font-semibold text-center shadow transition">
+                                <i class="fa-solid fa-cloud-sun block text-base mb-1"></i> Điểm danh CHIỀU
+                            </button>
+                        </div>
 
-                            <!-- Trần Anh Khoa (Admin) -->
-                            <tr class="bg-purple-50/20">
-                                <td rowspan="2" class="p-3 font-semibold text-purple-900 bg-purple-50/50 border-r">
-                                    Trần Anh Khoa <span class="text-[10px] bg-purple-200 text-purple-800 px-1 rounded block w-fit mt-1">Admin</span>
-                                </td>
-                                <td class="p-2 font-medium text-amber-700 bg-amber-50/30 border-r">SÁNG</td>
-                                <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc tại TT</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
-                                <td class="p-2 border-r">Kiểm tra hệ thống pano</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
-                                <td class="p-2 bg-slate-100 text-slate-400 text-center">Nghỉ</td>
-                            </tr>
-                            <tr class="border-b bg-purple-50/20">
-                                <td class="p-2 font-medium text-blue-700 bg-blue-50/30 border-r">CHIỀU</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
-                                <td class="p-2 border-r">Kiểm tra hệ thống pano</td>
-                                <td class="p-2 border-r">Kiểm tra hệ thống pano</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
-                                <td class="p-2 border-r">Sắp kho bãi vật tư, vệ sinh</td>
-                                <td class="p-2 bg-slate-100 text-slate-400 text-center border-r">Nghỉ</td>
-                                <td class="p-2 bg-slate-100 text-slate-400 text-center">Nghỉ</td>
-                            </tr>
+                        <!-- Chức năng riêng của Admin (Trần Anh Khoa) -->
+                        <div id="adminControls" class="hidden pt-2 border-t border-slate-200">
+                            <p class="text-xs font-bold text-purple-800 mb-2"><i class="fa-solid fa-user-shield"></i> Quyền Quản Trị Admin:</p>
+                            <button onclick="viewCheckinHistory()" class="w-full bg-purple-100 hover:bg-purple-200 text-purple-800 py-2 rounded-lg text-xs font-medium transition flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-list-check"></i> Xem Nhật Ký Điểm Danh Tất Cả
+                            </button>
+                        </div>
 
-                            <!-- Trần Thị Tùng Chi -->
-                            <tr>
-                                <td rowspan="2" class="p-3 font-semibold text-slate-800 bg-slate-50/50 border-r">Trần Thị Tùng Chi</td>
-                                <td class="p-2 font-medium text-amber-700 bg-amber-50/30 border-r">SÁNG</td>
-                                <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc tại TT</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
-                                <td class="p-2 bg-slate-100 text-slate-400 text-center">Nghỉ</td>
-                            </tr>
-                            <tr>
-                                <td class="p-2 font-medium text-blue-700 bg-blue-50/30 border-r">CHIỀU</td>
-                                <td class="p-2 border-r">13h30: Sơ kết phát triển KT-XH</td>
-                                <td class="p-2 border-r">13h30: Lấy tin viết bài tại UB</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
-                                <td class="p-2 border-r">Sắp kho bãi vật tư, vệ sinh</td>
-                                <td class="p-2 bg-slate-100 text-slate-400 text-center border-r">Nghỉ</td>
-                                <td class="p-2 bg-slate-100 text-slate-400 text-center">Nghỉ</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <button onclick="logout()" class="w-full text-slate-400 hover:text-rose-600 text-xs py-1 transition">
+                            <i class="fa-solid fa-power-off mr-1"></i> Đăng xuất
+                        </button>
+                    </div>
                 </div>
             </div>
+
+            <!-- Cột phải: Bảng Báo Cáo Lịch Làm Việc Tuần (8 Cột) -->
+            <div id="lichcongtac" class="lg:col-span-8">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-3 mb-3 border-b border-slate-200 gap-2">
+                        <div>
+                            <h2 class="font-bold text-slate-800 text-sm uppercase flex items-center gap-2">
+                                <i class="fa-solid fa-calendar-days text-blue-600"></i> LỊCH LÀM VIỆC TUẦN CÁN BỘ BỘ PHẬN
+                            </h2>
+                            <p class="text-xs text-slate-500">Trích xuất tự động từ Google Sheets bộ phận Văn hóa</p>
+                        </div>
+                        <a href="https://docs.google.com/spreadsheets/d/1HEERG29ikaAdlv6DJpI9q6YclAKvOpfC60EpGOYSkfs/edit?usp=sharing" target="_blank" class="text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold px-3 py-1.5 rounded-lg border border-emerald-200 transition flex items-center gap-1">
+                            <i class="fa-solid fa-file-excel"></i> File Google Sheets Gốc
+                        </a>
+                    </div>
+
+                    <!-- Bảng Responsive cuộn ngang khi trên điện thoại -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse min-w-[650px]">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
+                                    <th class="p-2.5 w-28 border-r">Cán Bộ</th>
+                                    <th class="p-2.5 w-16 border-r">Buổi</th>
+                                    <th class="p-2.5 border-r bg-blue-50/50">Thứ 2</th>
+                                    <th class="p-2.5 border-r">Thứ 3</th>
+                                    <th class="p-2.5 border-r">Thứ 4</th>
+                                    <th class="p-2.5 border-r">Thứ 5</th>
+                                    <th class="p-2.5 border-r">Thứ 6</th>
+                                    <th class="p-2.5 border-r">Thứ 7</th>
+                                    <th class="p-2.5">CN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                <!-- Minh Khuê -->
+                                <tr>
+                                    <td rowspan="2" class="p-2.5 font-bold text-slate-800 bg-slate-50 border-r">Nguyễn Bỉnh Minh Khuê</td>
+                                    <td class="p-2 font-semibold text-amber-700 bg-amber-50/40 border-r">SÁNG</td>
+                                    <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc TT</td>
+                                    <td class="p-2 border-r">Lấy tin bài UB</td>
+                                    <td class="p-2 border-r">Lấy tin bài UB</td>
+                                    <td class="p-2 border-r">8h: Ngày Quốc tế Người cao tuổi KV6</td>
+                                    <td class="p-2 border-r">Lấy tin bài UB</td>
+                                    <td class="p-2 border-r">7h: Khảo sát TDP cùng Chủ tịch</td>
+                                    <td class="p-2"></td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-2 font-semibold text-blue-700 bg-blue-50/40 border-r">CHIỀU</td>
+                                    <td class="p-2 border-r">13h30: Sơ kết KT-XH</td>
+                                    <td class="p-2 border-r">Lấy tin bài UB</td>
+                                    <td class="p-2 border-r">Lấy tin bài UB</td>
+                                    <td class="p-2 border-r">Lấy tin bài UB</td>
+                                    <td class="p-2 border-r">Lấy tin bài UB</td>
+                                    <td class="p-2 border-r"></td>
+                                    <td class="p-2"></td>
+                                </tr>
+
+                                <!-- Quốc Tuấn -->
+                                <tr>
+                                    <td rowspan="2" class="p-2.5 font-bold text-slate-800 bg-slate-50 border-r">Hoàng Quốc Tuấn</td>
+                                    <td class="p-2 font-semibold text-amber-700 bg-amber-50/40 border-r">SÁNG</td>
+                                    <td class="p-2 border-r">Chào cờ UB</td>
+                                    <td class="p-2 border-r">Họp UBND</td>
+                                    <td class="p-2 border-r">In GCN, Pano Quang Trung</td>
+                                    <td class="p-2 border-r">Lập KH Trại sáng tác 2026</td>
+                                    <td class="p-2 border-r">Thiết kế Pano Viettel</td>
+                                    <td class="p-2 border-r">Làm việc TT</td>
+                                    <td class="p-2"></td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-2 font-semibold text-blue-700 bg-blue-50/40 border-r">CHIỀU</td>
+                                    <td class="p-2 border-r">Làm việc TT</td>
+                                    <td class="p-2 border-r">Làm việc TT</td>
+                                    <td class="p-2 border-r">Họp UBND "Quang Trung"</td>
+                                    <td class="p-2 border-r">Dự trù Trại sáng tác 2026</td>
+                                    <td class="p-2 border-r">Vệ sinh kho vật tư</td>
+                                    <td class="p-2 border-r"></td>
+                                    <td class="p-2"></td>
+                                </tr>
+
+                                <!-- Trần Anh Khoa (Admin) -->
+                                <tr class="bg-purple-50/30">
+                                    <td rowspan="2" class="p-2.5 font-bold text-purple-900 bg-purple-100/50 border-r">
+                                        Trần Anh Khoa <span class="text-[9px] bg-purple-200 text-purple-800 px-1 rounded block w-fit mt-0.5">Admin</span>
+                                    </td>
+                                    <td class="p-2 font-semibold text-amber-700 bg-amber-50/40 border-r">SÁNG</td>
+                                    <td class="p-2 border-r">Chào cờ UB</td>
+                                    <td class="p-2 border-r">Làm việc TT</td>
+                                    <td class="p-2 border-r">Kiểm tra Pano</td>
+                                    <td class="p-2 border-r">Làm việc TT</td>
+                                    <td class="p-2 border-r">Làm việc TT</td>
+                                    <td class="p-2 border-r">Làm việc TT</td>
+                                    <td class="p-2 text-center text-slate-400 bg-slate-100">Nghỉ</td>
+                                </tr>
+                                <tr class="border-b bg-purple-50/30">
+                                    <td class="p-2 font-semibold text-blue-700 bg-blue-50/40 border-r">CHIỀU</td>
+                                    <td class="p-2 border-r">Làm việc TT</td>
+                                    <td class="p-2 border-r">Kiểm tra Pano</td>
+                                    <td class="p-2 border-r">Kiểm tra Pano</td>
+                                    <td class="p-2 border-r">Làm việc TT</td>
+                                    <td class="p-2 border-r">Sắp kho bãi vật tư</td>
+                                    <td class="p-2 text-center text-slate-400 bg-slate-100 border-r">Nghỉ</td>
+                                    <td class="p-2 text-center text-slate-400 bg-slate-100">Nghỉ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Cổng thông tin -->
+    <footer class="bg-blue-950 text-slate-300 text-xs py-6 mt-12 border-t-4 border-yellow-500">
+        <div class="max-w-7xl mx-auto px-4 text-center md:text-left grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <p class="font-bold text-white text-sm">UBND PHƯỜNG AN CỰU - THÀNH PHỐ HUẾ</p>
+                <p class="mt-1">Bộ phận Văn hóa - Xã hội | Trung tâm Dịch vụ sự nghiệp công</p>
+                <p class="text-slate-400 mt-0.5">Địa chỉ: Phường An Cựu, Thành phố Huế, Tỉnh Thừa Thiên Huế</p>
+            </div>
+            <div class="md:text-right flex flex-col justify-center">
+                <p>© 2026 Bản quyền thuộc UBND Phường An Cựu</p>
+                <p class="text-slate-400 mt-0.5">Xây dựng & Phát triển hệ thống bởi: <b>Trần Anh Khoa (Admin)</b></p>
+            </div>
         </div>
+    </footer>
 
-    </div>
-
-    <!-- Modal Xem lịch sử điểm danh (Dành cho Admin) -->
-    <div id="adminModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-2xl w-full p-6 space-y-4 shadow-xl">
-            <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
-                    <i class="fa-solid fa-clipboard-user text-purple-600"></i> Nhật Ký Điểm Danh Cán Bộ
+    <!-- Modal Admin xem nhật ký điểm danh -->
+    <div id="adminModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-xl w-full p-5 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-purple-600"></i> NHẬT KÝ ĐIỂM DANH TOÀN CƠ QUAN
                 </h3>
                 <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
-            <div class="max-h-80 overflow-y-auto">
+            <div class="max-h-72 overflow-y-auto">
                 <table class="w-full text-xs text-left border-collapse">
                     <thead class="bg-slate-100 sticky top-0">
                         <tr>
                             <th class="p-2 border">Thời gian</th>
-                            <th class="p-2 border">Tên cán bộ</th>
+                            <th class="p-2 border">Cán bộ</th>
                             <th class="p-2 border">Buổi</th>
                             <th class="p-2 border">Trạng thái</th>
                         </tr>
                     </thead>
-                    <tbody id="checkinLogsTable" class="divide-y">
-                        <!-- Dữ liệu điểm danh sẽ load vào đây -->
-                    </tbody>
+                    <tbody id="checkinLogsTable" class="divide-y"></tbody>
                 </table>
             </div>
-            <div class="text-right pt-2">
-                <button onclick="closeAdminModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg text-xs font-semibold">Đóng</button>
+            <div class="text-right pt-2 border-t">
+                <button onclick="closeAdminModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-1.5 rounded-lg text-xs font-semibold">Đóng</button>
             </div>
         </div>
     </div>
 
-    <!-- JS Xử lý Đăng Nhập & Phân Quyền -->
+    <!-- JS Logic Đăng Nhập & Responsive -->
     <script>
-        // Cơ sở dữ liệu tài khoản
         const userDatabase = {
             "anhkhoaancuu": { name: "Trần Anh Khoa", pass: "123456789", role: "admin" },
             "tungchiancuu": { name: "Trần Thị Tùng Chi", pass: "123456789", role: "user" },
@@ -307,15 +418,18 @@
             "nguyenvuancuu": { name: "Lê Nguyên Vũ", pass: "123456789", role: "user" }
         };
 
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        }
+
         function updateTime() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('vi-VN') + ' - ' + now.toLocaleDateString('vi-VN');
             const el = document.getElementById('currentTime');
-            if (el) el.innerText = 'Bây giờ: ' + timeStr;
+            if (el) el.innerText = 'Thời gian hiện tại: ' + timeStr;
         }
         setInterval(updateTime, 1000);
 
-        // Kiểm tra phiên đăng nhập tự động khi tải trang
         window.onload = function() {
             updateTime();
             const sessionUser = JSON.parse(localStorage.getItem('ancuu_session'));
@@ -326,7 +440,6 @@
             }
         };
 
-        // Hàm Đăng Nhập
         function handleLogin() {
             const userVal = document.getElementById('usernameInput').value.trim();
             const passVal = document.getElementById('passwordInput').value.trim();
@@ -334,23 +447,18 @@
 
             if (userDatabase[userVal] && userDatabase[userVal].pass === passVal) {
                 errorEl.classList.add('hidden');
-                // Lưu phiên đăng nhập tự động cho lần sau
                 localStorage.setItem('ancuu_session', JSON.stringify({ username: userVal }));
                 renderLoggedInState(userVal);
-                document.getElementById('usernameInput').value = '';
-                document.getElementById('passwordInput').value = '';
             } else {
                 errorEl.classList.remove('hidden');
             }
         }
 
-        // Đăng xuất
         function logout() {
             localStorage.removeItem('ancuu_session');
             renderLoggedOutState();
         }
 
-        // Cập nhật giao diện khi đã đăng nhập thành công
         function renderLoggedInState(username) {
             const userData = userDatabase[username];
             document.getElementById('loginForm').classList.add('hidden');
@@ -362,43 +470,40 @@
 
             if (userData.role === 'admin') {
                 badge.innerText = 'ADMIN';
-                badge.className = 'text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 border border-purple-200';
+                badge.className = 'text-[9px] uppercase font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 border border-purple-200';
                 adminControls.classList.remove('hidden');
             } else {
                 badge.innerText = 'CÁN BỘ';
-                badge.className = 'text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 border border-blue-200';
+                badge.className = 'text-[9px] uppercase font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 border border-blue-200';
                 adminControls.classList.add('hidden');
             }
 
-            document.getElementById('userStatus').innerHTML = `
-                <div class="text-right">
-                    <p class="text-xs text-blue-200">${userData.role === 'admin' ? 'Quản trị viên' : 'Cán bộ công tác'}</p>
-                    <p class="text-sm font-bold text-yellow-300">${userData.name}</p>
+            document.getElementById('userHeaderStatus').innerHTML = `
+                <div class="text-right hidden sm:block">
+                    <p class="text-[10px] text-slate-500 font-semibold">${userData.role === 'admin' ? 'Quản trị viên' : 'Cán bộ'}</p>
+                    <p class="text-xs font-bold text-blue-900">${userData.name}</p>
                 </div>
-                <div class="w-9 h-9 rounded-full ${userData.role === 'admin' ? 'bg-purple-500 text-white' : 'bg-yellow-400 text-blue-900'} font-bold flex items-center justify-center shadow">
-                    ${userData.name.charAt(0)}
-                </div>
+                <button onclick="logout()" class="text-xs bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-600 font-medium px-3 py-1.5 rounded-lg border border-slate-200 transition">
+                    <i class="fa-solid fa-power-off"></i> Thoát
+                </button>
             `;
         }
 
-        // Giao diện khi chưa đăng nhập
         function renderLoggedOutState() {
             document.getElementById('loginForm').classList.remove('hidden');
             document.getElementById('checkinPanel').classList.add('hidden');
-            document.getElementById('userStatus').innerHTML = `
-                <span class="text-xs bg-blue-800 text-blue-200 px-3 py-1.5 rounded-full border border-blue-700">
-                    <i class="fa-solid fa-lock"></i> Chưa đăng nhập
-                </span>
+            document.getElementById('userHeaderStatus').innerHTML = `
+                <a href="#diemdanh" class="text-xs bg-blue-800 hover:bg-blue-900 text-white font-semibold px-3 py-1.5 rounded-lg shadow transition flex items-center gap-1">
+                    <i class="fa-solid fa-user-lock"></i> Đăng Nhập
+                </a>
             `;
         }
 
-        // Điểm danh
         function doCheckIn(session) {
             const sessionData = JSON.parse(localStorage.getItem('ancuu_session'));
             const userData = userDatabase[sessionData.username];
             const timeStr = new Date().toLocaleTimeString('vi-VN') + ' ' + new Date().toLocaleDateString('vi-VN');
 
-            // Lưu nhật ký vào LocalStorage
             let logs = JSON.parse(localStorage.getItem('ancuu_checkin_logs') || '[]');
             logs.unshift({ time: timeStr, name: userData.name, session: session, status: 'Đã điểm danh' });
             localStorage.setItem('ancuu_checkin_logs', JSON.stringify(logs));
@@ -406,7 +511,6 @@
             alert(`[ĐIỂM DANH THÀNH CÔNG]\nCán bộ: ${userData.name}\nBuổi: ${session}\nThời gian: ${timeStr}`);
         }
 
-        // Chức năng Admin xem nhật ký
         function viewCheckinHistory() {
             const logs = JSON.parse(localStorage.getItem('ancuu_checkin_logs') || '[]');
             const tbody = document.getElementById('checkinLogsTable');
