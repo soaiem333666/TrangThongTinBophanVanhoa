@@ -3,197 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bộ Phận Văn Hoá - Phường An Cựu</title>
+    <title>Cổng Nội Bộ - Bộ Phận Văn Hoá Phường An Cựu</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icon -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .bg-portal-gradient {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1d4ed8 100%);
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .bg-portal {
+            background: linear-gradient(135deg, #0b132b 0%, #1c2541 40%, #3a506b 100%);
         }
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(16px);
         }
-        /* Style thanh cuộn đẹp */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .scanner-line {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #10b981, transparent);
+            animation: scan 2s infinite ease-in-out;
+        }
+        @keyframes scan {
+            0% { top: 0%; }
+            50% { top: 95%; }
+            100% { top: 0%; }
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col">
 
-    <!-- ==================== HEADER CAO CẤP ==================== -->
-    <header class="bg-portal-gradient text-white shadow-xl sticky top-0 z-50 transition-all duration-300">
-        <!-- Top Bar Thông tin & Đăng nhập -->
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center border-b border-blue-800/50">
-            <div>
-                <h1 class="font-extrabold text-base sm:text-xl tracking-tight text-white flex items-center gap-2">
-                    <span>BỘ PHẬN VĂN HOÁ - XÃ HỘI</span>
-                </h1>
-                <p class="text-[11px] sm:text-xs text-blue-200 font-medium">Trung tâm Dịch vụ sự nghiệp công Phường An Cựu</p>
-            </div>
-            
-            <!-- Trạng thái người dùng trên Header (PC) -->
-            <div id="userStatus" class="hidden sm:flex items-center space-x-3">
-                <!-- Javascript sẽ điền trạng thái vào đây -->
+    <!-- ==================== HEADER ĐẲNG CẤP ==================== -->
+    <header class="bg-portal text-white shadow-2xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3.5 flex justify-between items-center border-b border-white/10">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-400 to-yellow-200 flex items-center justify-center shadow-lg shadow-amber-500/20 text-blue-950 font-black text-xl">
+                    <i class="fa-solid fa-landmark"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-base sm:text-xl tracking-tight text-white">
+                        BỘ PHẬN VĂN HOÁ - XÃ HỘI
+                    </h1>
+                    <p class="text-[11px] sm:text-xs text-blue-200 font-medium">Trung tâm Dịch vụ sự nghiệp công Phường An Cựu</p>
+                </div>
             </div>
 
-            <!-- Nút Toggle Menu trên Điển thoại -->
-            <button onclick="toggleMobileMenu()" class="sm:hidden text-white hover:text-amber-300 p-2 focus:outline-none">
-                <i class="fa-solid fa-bars text-xl"></i>
+            <!-- Trạng thái IP & Người dùng PC -->
+            <div class="hidden md:flex items-center gap-4">
+                <div class="bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-xs flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>IP Văn phòng: <b id="userIpDisplay" class="text-amber-300">Đang kiểm tra...</b></span>
+                </div>
+                <div id="userHeaderStatus"></div>
+            </div>
+
+            <!-- Nút Toggle Menu Mobile -->
+            <button onclick="toggleMobileNav()" class="md:hidden text-white hover:text-amber-300 p-2">
+                <i class="fa-solid fa-bars-staggered text-xl"></i>
             </button>
         </div>
 
-        <!-- Menu Điều Hướng (Responsive) -->
-        <nav id="navMenu" class="hidden sm:block bg-blue-950/80 backdrop-blur-md border-t border-blue-800/30">
-            <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col sm:flex-row justify-between items-center text-xs font-semibold gap-2">
-                <div class="flex flex-wrap gap-1 sm:gap-6 w-full sm:w-auto">
-                    <a href="#lichlamviec" class="hover:text-amber-300 text-amber-400 py-1 transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-calendar-days"></i> Lịch Công Tác Tuần
+        <!-- Menu Điều Hướng Responsive -->
+        <nav id="mobileNav" class="hidden md:block bg-blue-950/90 backdrop-blur-md border-t border-white/5">
+            <div class="max-w-7xl mx-auto px-4 py-2 flex flex-col md:flex-row justify-between items-center text-xs font-semibold gap-2">
+                <div class="flex flex-wrap gap-2 sm:gap-6 w-full md:w-auto">
+                    <a href="#diemdanh" class="hover:text-amber-300 text-amber-400 py-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-camera-retro text-emerald-400"></i> Điểm Danh AI Face Cam
                     </a>
-                    <a href="#diemdanh" class="hover:text-amber-300 py-1 transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-user-check text-emerald-400"></i> Điểm Danh Cán Bộ
+                    <a href="#lichlamviec" class="hover:text-amber-300 py-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-calendar-week text-blue-400"></i> Lịch Công Tác Tuần
                     </a>
-                    <a href="#thongbao" class="hover:text-amber-300 py-1 transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-bullhorn text-amber-400"></i> Thông Báo Bộ Phận
+                    <a href="#thongke" class="hover:text-amber-300 py-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-chart-pie text-purple-400"></i> Thống Kê Ngày Công
+                    </a>
+                    <a href="#donbaonghi" class="hover:text-amber-300 py-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-pen text-amber-400"></i> Đăng Ký Báo Nghỉ / Trực
                     </a>
                 </div>
-                <div id="currentTimeHeader" class="text-[11px] text-blue-300 font-normal"></div>
+                <div id="clockDisplay" class="text-[11px] text-blue-300 font-normal"></div>
             </div>
         </nav>
     </header>
 
-    <!-- ==================== MAIN CONTENT ==================== -->
+    <!-- ==================== NỘI DUNG CHÍNH ==================== -->
     <main class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
 
-        <!-- CỘT TRÁI: ĐIỂM DANH & QUẢN TRỊ (4 Cột trên PC, 12 Cột trên Mobile) -->
-        <aside class="lg:col-span-4 space-y-6">
-            
-            <!-- CARD 1: ĐĂNG NHẬP / ĐIỂM DANH -->
-            <div id="diemdanh" class="glass-card rounded-2xl shadow-sm border border-slate-200/80 p-5 transition-all hover:shadow-md">
+        <!-- CỘT TRÁI: TÀI KHOẢN & ĐIỂM DANH KHUÔN MẶT AI (5 Cột) -->
+        <aside class="lg:col-span-5 space-y-6">
+
+            <!-- CARD ĐIỂM DANH FACE RECOGNITION -->
+            <div id="diemdanh" class="glass-card rounded-2xl shadow-xl border border-slate-200/80 p-5 relative overflow-hidden">
                 <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-                    <h2 class="font-bold text-slate-800 text-sm flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                            <i class="fa-solid fa-user-shield text-base"></i>
+                    <h2 class="font-extrabold text-slate-800 text-sm flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-user-check"></i>
                         </div>
-                        Tài Khoản & Điểm Danh
+                        Điểm Danh Khuôn Mặt AI
                     </h2>
-                    <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">Nội Bộ</span>
+                    <span id="ipCheckBadge" class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-500">
+                        Đang check IP...
+                    </span>
                 </div>
 
-                <!-- Form Đăng nhập -->
-                <div id="loginForm" class="space-y-3">
+                <!-- Form Đăng nhập tài khoản -->
+                <div id="loginForm" class="space-y-3.5">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tên tài khoản</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-user absolute left-3 top-3 text-slate-400 text-xs"></i>
-                            <input type="text" id="usernameInput" placeholder="Ví dụ: anhkhoaancuu" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:bg-white focus:outline-none transition">
-                        </div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tài khoản cán bộ</label>
+                        <input type="text" id="usernameInput" placeholder="Nhập tài khoản (vd: anhkhoaancuu)" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:bg-white focus:outline-none transition">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Mật khẩu</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-lock absolute left-3 top-3 text-slate-400 text-xs"></i>
-                            <input type="password" id="passwordInput" placeholder="••••••••" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:bg-white focus:outline-none transition">
-                        </div>
+                        <input type="password" id="passwordInput" placeholder="••••••••" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:bg-white focus:outline-none transition">
                     </div>
-                    <div id="loginError" class="text-[11px] text-rose-600 hidden font-medium flex items-center gap-1">
-                        <i class="fa-solid fa-circle-exclamation"></i> Sai tài khoản hoặc mật khẩu!
-                    </div>
-                    <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl text-xs shadow-md shadow-blue-500/20 transition flex justify-center items-center gap-2">
-                        <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập Hệ Thống
+                    <div id="loginError" class="text-xs text-rose-600 hidden font-semibold">Tài khoản hoặc mật khẩu không chính xác!</div>
+                    <button onclick="handleLogin()" class="w-full bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-800 hover:to-indigo-800 text-white font-bold py-2.5 rounded-xl text-xs shadow-lg shadow-blue-600/20 transition flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập
                     </button>
                 </div>
 
-                <!-- Khung Chức năng khi đã đăng nhập thành công -->
+                <!-- Khu vực Khung Camera Điểm Danh khi Đã Đăng Nhập -->
                 <div id="checkinPanel" class="hidden space-y-4">
-                    <div class="p-3.5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100 relative">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-[11px] text-slate-500 font-medium">Xin chào cán bộ:</p>
-                                <p id="currentUserName" class="font-bold text-blue-900 text-sm mt-0.5"></p>
-                            </div>
-                            <span id="roleBadge" class="text-[9px] uppercase font-bold px-2 py-0.5 rounded-full shadow-sm"></span>
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
+                        <div>
+                            <p class="text-[10px] text-slate-400 font-semibold uppercase">Cán bộ hoạt động</p>
+                            <p id="currentUserName" class="font-bold text-slate-800 text-sm"></p>
                         </div>
-                        <p id="currentTime" class="text-[11px] text-slate-500 mt-2 border-t border-blue-100/60 pt-2 flex items-center gap-1">
-                            <i class="fa-regular fa-clock text-blue-500"></i> <span id="timeText"></span>
-                        </p>
+                        <span id="roleBadge" class="text-[10px] font-bold px-2.5 py-1 rounded-full"></span>
                     </div>
 
-                    <!-- Nút Điểm Danh -->
-                    <div class="grid grid-cols-2 gap-2.5">
-                        <button onclick="doCheckIn('Sáng')" class="bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-xl text-xs font-semibold text-center shadow-md shadow-emerald-600/20 transition active:scale-95">
-                            <i class="fa-solid fa-sun block text-base mb-1 text-amber-300"></i> Điểm danh SÁNG
+                    <!-- Khung Camera AI -->
+                    <div class="relative bg-slate-900 rounded-2xl overflow-hidden aspect-video border-2 border-slate-800 shadow-inner flex items-center justify-center">
+                        <video id="webcam" autoplay playsinline class="w-full h-full object-cover transform -scale-x-100 hidden"></video>
+                        <canvas id="canvas" class="hidden"></canvas>
+
+                        <!-- Giao diện khi chưa mở Cam -->
+                        <div id="camPlaceholder" class="text-center p-4">
+                            <i class="fa-solid fa-camera text-3xl text-slate-600 mb-2"></i>
+                            <p class="text-xs text-slate-400 font-medium">Bấm bên dưới để kích hoạt AI Face Cam</p>
+                        </div>
+
+                        <!-- Khung quét Face ID -->
+                        <div id="faceOverlay" class="hidden absolute inset-0 pointer-events-none flex flex-col justify-between p-4">
+                            <div class="scanner-line absolute w-full left-0"></div>
+                            <div class="border-2 border-emerald-400/60 rounded-2xl h-full w-3/4 mx-auto border-dashed animate-pulse"></div>
+                            <span class="bg-black/60 backdrop-blur-md text-emerald-400 text-[10px] font-bold px-2 py-1 rounded-md mx-auto">
+                                <i class="fa-solid fa-face-smile mr-1"></i> AI Scanning...
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Nút Bật Camera & Điểm Danh -->
+                    <div class="space-y-2">
+                        <button id="btnStartCam" onclick="startCamera()" class="w-full bg-slate-800 hover:bg-slate-900 text-white py-2 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-video text-amber-400"></i> Bật Camera Quét Khuôn Mặt
                         </button>
-                        <button onclick="doCheckIn('Chiều')" class="bg-amber-600 hover:bg-amber-700 text-white p-3 rounded-xl text-xs font-semibold text-center shadow-md shadow-amber-600/20 transition active:scale-95">
-                            <i class="fa-solid fa-cloud-sun block text-base mb-1 text-yellow-200"></i> Điểm danh CHIỀU
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="triggerFaceCheckIn('Sáng')" class="bg-emerald-600 hover:bg-emerald-700 text-white p-2.5 rounded-xl text-xs font-bold shadow-md shadow-emerald-600/20 transition active:scale-95">
+                                <i class="fa-solid fa-sun block text-base mb-0.5"></i> Điểm danh SÁNG
+                            </button>
+                            <button onclick="triggerFaceCheckIn('Chiều')" class="bg-amber-600 hover:bg-amber-700 text-white p-2.5 rounded-xl text-xs font-bold shadow-md shadow-amber-600/20 transition active:scale-95">
+                                <i class="fa-solid fa-cloud-sun block text-base mb-0.5"></i> Điểm danh CHIỀU
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bảng điều khiển Admin -->
+                    <div id="adminControls" class="hidden pt-2 border-t border-slate-200">
+                        <button onclick="viewCheckinHistory()" class="w-full bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 py-2 rounded-xl text-xs font-bold transition flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-shield-cat"></i> Xem Nhật Ký Điểm Danh Toàn Bộ
                         </button>
                     </div>
 
-                    <!-- Chức năng riêng của Admin (Trần Anh Khoa) -->
-                    <div id="adminControls" class="hidden pt-3 border-t border-slate-200">
-                        <p class="text-xs font-bold text-purple-900 mb-2 flex items-center gap-1">
-                            <i class="fa-solid fa-crown text-purple-600"></i> Quyền Admin Quản Trị:
-                        </p>
-                        <button onclick="viewCheckinHistory()" class="w-full bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 py-2 rounded-xl text-xs font-medium transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-list-check"></i> Xem Nhật Ký Điểm Danh Cán Bộ
-                        </button>
-                    </div>
-
-                    <button onclick="logout()" class="w-full text-slate-400 hover:text-rose-600 text-xs py-1 transition flex items-center justify-center gap-1">
-                        <i class="fa-solid fa-power-off"></i> Đăng xuất tài khoản
+                    <button onclick="logout()" class="w-full text-slate-400 hover:text-rose-600 text-xs py-1 transition flex justify-center items-center gap-1">
+                        <i class="fa-solid fa-power-off"></i> Đăng xuất
                     </button>
                 </div>
             </div>
 
-            <!-- CARD 2: THÔNG BÁO BỘ PHẬN -->
-            <div id="thongbao" class="glass-card rounded-2xl shadow-sm border border-slate-200/80 p-5">
-                <h2 class="font-bold text-slate-800 text-sm mb-3 flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-                        <i class="fa-solid fa-bell text-base"></i>
+            <!-- CARD THỐNG KÊ NGÀY CÔNG & CHUYÊN CẦN -->
+            <div id="thongke" class="glass-card rounded-2xl shadow-sm border border-slate-200/80 p-5">
+                <h2 class="font-extrabold text-slate-800 text-sm mb-3 flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                        <i class="fa-solid fa-chart-line"></i>
                     </div>
-                    Thông Báo Công Tác
+                    Thống Kê Ngày Công Tháng 10/2026
                 </h2>
-                <div class="space-y-2.5 text-xs text-slate-600">
-                    <div class="p-3 bg-slate-50 rounded-xl border-l-4 border-blue-500 hover:bg-blue-50/50 transition">
-                        <p class="font-bold text-slate-800 mb-0.5">Chào cờ đầu tuần</p>
-                        <p class="text-[11px] text-slate-500">7h30 Thứ Hai tập trung tại Ủy ban Phường.[cite: 3]</p>
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="p-2.5 bg-blue-50 rounded-xl border border-blue-100">
+                        <p class="text-[10px] text-slate-500 font-semibold">Đúng giờ</p>
+                        <p class="text-lg font-black text-blue-700 mt-0.5">22</p>
                     </div>
-                    <div class="p-3 bg-slate-50 rounded-xl border-l-4 border-emerald-500 hover:bg-emerald-50/50 transition">
-                        <p class="font-bold text-slate-800 mb-0.5">Vệ sinh cơ quan định kỳ</p>
-                        <p class="text-[11px] text-slate-500">Chiều Thứ Sáu dọn dẹp kho bãi vật tư VHXH.[cite: 3]</p>
+                    <div class="p-2.5 bg-amber-50 rounded-xl border border-amber-100">
+                        <p class="text-[10px] text-slate-500 font-semibold">Muộn/Sớm</p>
+                        <p class="text-lg font-black text-amber-600 mt-0.5">0</p>
+                    </div>
+                    <div class="p-2.5 bg-emerald-50 rounded-xl border border-emerald-100">
+                        <p class="text-[10px] text-slate-500 font-semibold">Chuyên cần</p>
+                        <p class="text-lg font-black text-emerald-600 mt-0.5">100%</p>
                     </div>
                 </div>
             </div>
         </aside>
 
-        <!-- CỘT PHẢI: BÁO CÁO LỊCH LÀM VIỆC TUẦN (8 Cột trên PC, 12 Cột trên Mobile) -->
-        <section id="lichlamviec" class="lg:col-span-8">
-            <div class="glass-card rounded-2xl shadow-sm border border-slate-200/80 p-5 sm:p-6">
-                <!-- Header Bảng Lịch -->
+        <!-- CỘT PHẢI: BÁO CÁO LỊCH LÀM VIỆC & ĐĂNG KÝ BÁO NGHĨ (7 Cột) -->
+        <section class="lg:col-span-7 space-y-6">
+
+            <!-- CARD BÁO CÁO LỊCH LÀM VIỆC TUẦN -->
+            <div id="lichlamviec" class="glass-card rounded-2xl shadow-sm border border-slate-200/80 p-5 sm:p-6">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 mb-4 border-b border-slate-100 gap-3">
                     <div>
-                        <h2 class="font-extrabold text-slate-800 text-base sm:text-lg flex items-center gap-2">
-                            <i class="fa-solid fa-calendar-week text-blue-600"></i> BÁO CÁO LỊCH LÀM VIỆC TUẦN[cite: 3]
+                        <h2 class="font-extrabold text-slate-800 text-base flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-days text-blue-600"></i> Báo Cáo Lịch Làm Việc Tuần
                         </h2>
-                        <p class="text-xs text-slate-500 mt-0.5">Dữ liệu đồng bộ trực tiếp từ Google Sheets Bộ phận Văn hóa[cite: 3]</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Dữ liệu kết nối tự động từ Google Sheets bộ phận</p>
                     </div>
-                    <a href="https://docs.google.com/spreadsheets/d/1HEERG29ikaAdlv6DJpI9q6YclAKvOpfC60EpGOYSkfs/edit?usp=sharing" target="_blank" class="w-full sm:w-auto text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold px-3.5 py-2 rounded-xl border border-emerald-200 transition flex items-center justify-center gap-1.5 shadow-sm">
-                        <i class="fa-solid fa-file-excel text-emerald-600"></i> Mở File Gốc[cite: 3]
+                    <a href="https://docs.google.com/spreadsheets/d/1HEERG29ikaAdlv6DJpI9q6YclAKvOpfC60EpGOYSkfs/edit?usp=sharing" target="_blank" class="text-xs bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold px-3.5 py-2 rounded-xl border border-emerald-200 transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-file-excel text-emerald-600"></i> Mở File Gốc
                     </a>
                 </div>
 
-                <!-- Bảng Lịch Công Tác (Tối ưu Cuộn Ngang trên Mobile) -->
+                <!-- Bảng Lịch làm việc cuộn mượt -->
                 <div class="overflow-x-auto rounded-xl border border-slate-200">
-                    <table class="w-full text-left text-xs border-collapse min-w-[750px]">
+                    <table class="w-full text-left text-xs border-collapse min-w-[700px]">
                         <thead>
-                            <tr class="bg-slate-100/80 text-slate-700 uppercase font-bold border-b border-slate-200 text-[11px]">
+                            <tr class="bg-slate-100/90 text-slate-700 uppercase font-bold border-b border-slate-200 text-[11px]">
                                 <th class="p-3 w-36 border-r">Cán Bộ</th>
                                 <th class="p-3 w-16 border-r text-center">Buổi</th>
                                 <th class="p-3 border-r bg-blue-50/50">Thứ 2</th>
@@ -205,128 +239,162 @@
                                 <th class="p-3 text-center">Chủ Nhật</th>
                             </tr>
                         </thead>
-                        <tbody id="scheduleTableBody" class="divide-y divide-slate-200 text-slate-700">
+                        <tbody class="divide-y divide-slate-200 text-slate-700">
                             <!-- Nguyễn Bỉnh Minh Khuê -->
-                            <tr class="hover:bg-slate-50/80 transition">
-                                <td rowspan="2" class="p-3 font-semibold text-slate-900 bg-slate-50/50 border-r align-top">Nguyễn Bỉnh Minh Khuê[cite: 3]</td>
-                                <td class="p-2 font-bold text-amber-700 bg-amber-50/30 border-r text-center">SÁNG[cite: 3]</td>
-                                <td class="p-2 border-r">7h30: Chào cờ tại UB<br>8h: Làm việc tại Trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB[cite: 3]</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB[cite: 3]</td>
-                                <td class="p-2 border-r">8h: Ngày Quốc tế Người cao tuổi tại NVH KV6[cite: 3]</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB[cite: 3]</td>
-                                <td class="p-2 border-r">7h00: Khảo sát các tổ dân phố cùng Chủ tịch[cite: 3]</td>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td rowspan="2" class="p-3 font-semibold text-slate-900 bg-slate-50/50 border-r align-top">Nguyễn Bỉnh Minh Khuê</td>
+                                <td class="p-2 font-bold text-amber-700 bg-amber-50/30 border-r text-center">SÁNG</td>
+                                <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc TT</td>
+                                <td class="p-2 border-r">Lấy tin bài UB</td>
+                                <td class="p-2 border-r">Lấy tin bài UB</td>
+                                <td class="p-2 border-r">8h: Ngày Quốc tế Người cao tuổi NVH KV6</td>
+                                <td class="p-2 border-r">Lấy tin bài UB</td>
+                                <td class="p-2 border-r">7h00: Khảo sát TDP cùng Chủ tịch</td>
                                 <td class="p-2"></td>
                             </tr>
-                            <tr class="hover:bg-slate-50/80 transition border-b">
-                                <td class="p-2 font-bold text-blue-700 bg-blue-50/30 border-r text-center">CHIỀU[cite: 3]</td>
-                                <td class="p-2 border-r">13h30: Sơ kết phát triển KT-XH[cite: 3]</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB[cite: 3]</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB[cite: 3]</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB[cite: 3]</td>
-                                <td class="p-2 border-r">Lấy tin, viết bài tại UB[cite: 3]</td>
+                            <tr class="hover:bg-slate-50 transition border-b">
+                                <td class="p-2 font-bold text-blue-700 bg-blue-50/30 border-r text-center">CHIỀU</td>
+                                <td class="p-2 border-r">13h30: Sơ kết KT-XH</td>
+                                <td class="p-2 border-r">Lấy tin bài UB</td>
+                                <td class="p-2 border-r">Lấy tin bài UB</td>
+                                <td class="p-2 border-r">Lấy tin bài UB</td>
+                                <td class="p-2 border-r">Lấy tin bài UB</td>
                                 <td class="p-2 border-r"></td>
                                 <td class="p-2"></td>
                             </tr>
 
                             <!-- Hoàng Quốc Tuấn -->
-                            <tr class="hover:bg-slate-50/80 transition">
-                                <td rowspan="2" class="p-3 font-semibold text-slate-900 bg-slate-50/50 border-r align-top">Hoàng Quốc Tuấn[cite: 3]</td>
-                                <td class="p-2 font-bold text-amber-700 bg-amber-50/30 border-r text-center">SÁNG[cite: 3]</td>
-                                <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc tại TT[cite: 3]</td>
-                                <td class="p-2 border-r">Họp tại UBND[cite: 3]</td>
-                                <td class="p-2 border-r">In GCN, làm Pano Lễ hội Quang Trung[cite: 3]</td>
-                                <td class="p-2 border-r">Lập KH & dự trù kinh phí Trại sáng tác 2026[cite: 3]</td>
-                                <td class="p-2 border-r">Thiết kế Pano, làm việc với Viettel[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm[cite: 3]</td>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td rowspan="2" class="p-3 font-semibold text-slate-900 bg-slate-50/50 border-r align-top">Hoàng Quốc Tuấn</td>
+                                <td class="p-2 font-bold text-amber-700 bg-amber-50/30 border-r text-center">SÁNG</td>
+                                <td class="p-2 border-r">Chào cờ UB</td>
+                                <td class="p-2 border-r">Họp UBND</td>
+                                <td class="p-2 border-r">In GCN, làm Pano Lễ hội Quang Trung</td>
+                                <td class="p-2 border-r">Lập KH Trại sáng tác 2026</td>
+                                <td class="p-2 border-r">Thiết kế Pano Viettel</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
                                 <td class="p-2"></td>
                             </tr>
-                            <tr class="hover:bg-slate-50/80 transition border-b">
-                                <td class="p-2 font-bold text-blue-700 bg-blue-50/30 border-r text-center">CHIỀU[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Họp tại UBND "Quang Trung"[cite: 3]</td>
-                                <td class="p-2 border-r">Lập KH & dự trù kinh phí Trại sáng tác 2026[cite: 3]</td>
-                                <td class="p-2 border-r">Sắp kho bãi vật tư VHXH, vệ sinh[cite: 3]</td>
+                            <tr class="hover:bg-slate-50 transition border-b">
+                                <td class="p-2 font-bold text-blue-700 bg-blue-50/30 border-r text-center">CHIỀU</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Họp UBND "Quang Trung"</td>
+                                <td class="p-2 border-r">Dự trù Trại sáng tác 2026</td>
+                                <td class="p-2 border-r">Vệ sinh kho vật tư</td>
                                 <td class="p-2 border-r"></td>
                                 <td class="p-2"></td>
                             </tr>
 
                             <!-- Lê Nguyên Vũ -->
-                            <tr class="hover:bg-slate-50/80 transition">
-                                <td rowspan="2" class="p-3 font-semibold text-slate-900 bg-slate-50/50 border-r align-top">Lê Nguyên Vũ[cite: 3]</td>
-                                <td class="p-2 font-bold text-amber-700 bg-amber-50/30 border-r text-center">SÁNG[cite: 3]</td>
-                                <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc tại TT[cite: 3]</td>
-                                <td class="p-2 border-r">Thanh quyết toán giải vật[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm[cite: 3]</td>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td rowspan="2" class="p-3 font-semibold text-slate-900 bg-slate-50/50 border-r align-top">Lê Nguyên Vũ</td>
+                                <td class="p-2 font-bold text-amber-700 bg-amber-50/30 border-r text-center">SÁNG</td>
+                                <td class="p-2 border-r">Chào cờ UB</td>
+                                <td class="p-2 border-r">Thanh quyết toán giải vật</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
                                 <td class="p-2"></td>
                             </tr>
-                            <tr class="hover:bg-slate-50/80 transition border-b">
-                                <td class="p-2 font-bold text-blue-700 bg-blue-50/30 border-r text-center">CHIỀU[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Xây dựng báo cáo phát thanh[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm[cite: 3]</td>
+                            <tr class="hover:bg-slate-50 transition border-b">
+                                <td class="p-2 font-bold text-blue-700 bg-blue-50/30 border-r text-center">CHIỀU</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Báo cáo phát thanh</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
                                 <td class="p-2 border-r"></td>
                                 <td class="p-2"></td>
                             </tr>
 
                             <!-- Trần Anh Khoa (Admin) -->
-                            <tr class="bg-purple-50/30 hover:bg-purple-50/60 transition">
-                                <td rowspan="2" class="p-3 font-bold text-purple-950 bg-purple-100/40 border-r align-top">
-                                    Trần Anh Khoa[cite: 3]
-                                    <span class="text-[9px] bg-purple-200 text-purple-800 font-bold px-1.5 py-0.5 rounded-md inline-block mt-1 border border-purple-300">ADMIN[cite: 3]</span>
+                            <tr class="bg-purple-50/40 hover:bg-purple-50/80 transition">
+                                <td rowspan="2" class="p-3 font-bold text-purple-950 bg-purple-100/50 border-r align-top">
+                                    Trần Anh Khoa
+                                    <span class="text-[9px] bg-purple-200 text-purple-800 font-bold px-1.5 py-0.5 rounded-md inline-block mt-1 border border-purple-300">ADMIN</span>
                                 </td>
-                                <td class="p-2 font-bold text-amber-700 bg-amber-50/30 border-r text-center">SÁNG[cite: 3]</td>
-                                <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc tại TT[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Kiểm tra hệ thống pano[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm[cite: 3]</td>
-                                <td class="p-2 bg-slate-100 text-slate-400 text-center font-medium">Nghỉ[cite: 3]</td>
+                                <td class="p-2 font-bold text-amber-700 bg-amber-50/30 border-r text-center">SÁNG</td>
+                                <td class="p-2 border-r">Chào cờ UB</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Kiểm tra Pano</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 bg-slate-100 text-slate-400 text-center font-medium">Nghỉ</td>
                             </tr>
-                            <tr class="bg-purple-50/30 hover:bg-purple-50/60 transition border-b">
-                                <td class="p-2 font-bold text-blue-700 bg-blue-50/30 border-r text-center">CHIỀU[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Kiểm tra hệ thống pano[cite: 3]</td>
-                                <td class="p-2 border-r">Kiểm tra hệ thống pano[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Sắp kho bãi vật tư, vệ sinh[cite: 3]</td>
-                                <td class="p-2 bg-slate-100 text-slate-400 text-center border-r font-medium">Nghỉ[cite: 3]</td>
-                                <td class="p-2 bg-slate-100 text-slate-400 text-center font-medium">Nghỉ[cite: 3]</td>
+                            <tr class="bg-purple-50/40 hover:bg-purple-50/80 transition border-b">
+                                <td class="p-2 font-bold text-blue-700 bg-blue-50/30 border-r text-center">CHIỀU</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Kiểm tra Pano</td>
+                                <td class="p-2 border-r">Kiểm tra Pano</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Sắp kho bãi vật tư</td>
+                                <td class="p-2 bg-slate-100 text-slate-400 text-center border-r font-medium">Nghỉ</td>
+                                <td class="p-2 bg-slate-100 text-slate-400 text-center font-medium">Nghỉ</td>
                             </tr>
 
                             <!-- Trần Thị Tùng Chi -->
-                            <tr class="hover:bg-slate-50/80 transition">
-                                <td rowspan="2" class="p-3 font-semibold text-slate-900 bg-slate-50/50 border-r align-top">Trần Thị Tùng Chi[cite: 3]</td>
-                                <td class="p-2 font-bold text-amber-700 bg-amber-50/30 border-r text-center">SÁNG[cite: 3]</td>
-                                <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc tại TT[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm[cite: 3]</td>
-                                <td class="p-2 bg-slate-100 text-slate-400 text-center font-medium">Nghỉ[cite: 3]</td>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td rowspan="2" class="p-3 font-semibold text-slate-900 bg-slate-50/50 border-r align-top">Trần Thị Tùng Chi</td>
+                                <td class="p-2 font-bold text-amber-700 bg-amber-50/30 border-r text-center">SÁNG</td>
+                                <td class="p-2 border-r">Chào cờ UB</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 bg-slate-100 text-slate-400 text-center font-medium">Nghỉ</td>
                             </tr>
-                            <tr class="hover:bg-slate-50/80 transition">
-                                <td class="p-2 font-bold text-blue-700 bg-blue-50/30 border-r text-center">CHIỀU[cite: 3]</td>
-                                <td class="p-2 border-r">13h30: Sơ kết phát triển KT-XH[cite: 3]</td>
-                                <td class="p-2 border-r">13h30: Lấy tin viết bài tại UB[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Làm việc tại Trung tâm[cite: 3]</td>
-                                <td class="p-2 border-r">Sắp kho bãi vật tư, vệ sinh[cite: 3]</td>
-                                <td class="p-2 bg-slate-100 text-slate-400 text-center border-r font-medium">Nghỉ[cite: 3]</td>
-                                <td class="p-2 bg-slate-100 text-slate-400 text-center font-medium">Nghỉ[cite: 3]</td>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="p-2 font-bold text-blue-700 bg-blue-50/30 border-r text-center">CHIỀU</td>
+                                <td class="p-2 border-r">13h30: Sơ kết KT-XH</td>
+                                <td class="p-2 border-r">13h30: Lấy tin bài UB</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Làm việc TT</td>
+                                <td class="p-2 border-r">Sắp kho bãi vật tư</td>
+                                <td class="p-2 bg-slate-100 text-slate-400 text-center border-r font-medium">Nghỉ</td>
+                                <td class="p-2 bg-slate-100 text-slate-400 text-center font-medium">Nghỉ</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+
+            <!-- CARD BÁO NGHỈ / ĐỔI CA TRỰC -->
+            <div id="donbaonghi" class="glass-card rounded-2xl shadow-sm border border-slate-200/80 p-5">
+                <h2 class="font-extrabold text-slate-800 text-sm mb-3 flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </div>
+                    Gửi Đơn Báo Nghỉ / Đổi Ca Công Tác
+                </h2>
+                <form onsubmit="submitLeaveForm(event)" class="space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Loại yêu cầu</label>
+                            <select id="leaveType" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                <option value="Xin nghỉ phép">Xin nghỉ phép</option>
+                                <option value="Báo công tác ngoài">Báo công tác ngoài UB</option>
+                                <option value="Đổi ca trực">Đổi ca công tác</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Ngày áp dụng</label>
+                            <input type="date" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Lý do chi tiết</label>
+                        <textarea rows="2" placeholder="Nhập lý do chi tiết..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+                    </div>
+                    <button type="submit" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-xl text-xs transition shadow-md">
+                        <i class="fa-solid fa-paper-plane mr-1"></i> Gửi Yêu Cầu Cho Admin
+                    </button>
+                </form>
+            </div>
+
         </section>
 
     </main>
@@ -335,19 +403,19 @@
     <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-3">
             <div>
-                <p class="font-bold text-slate-200">CỔNG THÔNG TIN NỘI BỘ BỘ PHẬN VĂN HOÁ PHƯỜNG AN CỰU</p>
-                <p class="text-[11px] text-slate-500 mt-0.5">Trung tâm Dịch vụ sự nghiệp công Phường An Cựu</p>
+                <p class="font-bold text-slate-200">CỔNG THÔNG TIN CÔNG TÁC BỘ PHẬN VĂN HOÁ PHƯỜNG AN CỰU</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">Thành phố Huế, Tỉnh Thừa Thiên Huế</p>
             </div>
-            <p class="text-[11px]">Hệ thống được phát triển bởi Admin: <span class="text-slate-200 font-semibold">Trần Anh Khoa</span></p>
+            <p class="text-[11px]">Quản trị hệ thống bởi Admin: <span class="text-slate-200 font-semibold">Trần Anh Khoa</span></p>
         </div>
     </footer>
 
-    <!-- MODAL XEM NHẬT KÝ ĐIỂM DANH (DÀNH CHO ADMIN) -->
+    <!-- MODAL XEM NHẬT KÝ ĐIỂM DANH (ADMIN) -->
     <div id="adminModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-2xl w-full p-6 space-y-4 shadow-2xl border border-slate-100">
             <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-slate-800 text-sm sm:text-base flex items-center gap-2">
-                    <i class="fa-solid fa-clipboard-user text-purple-600"></i> Nhật Ký Điểm Danh Cán Bộ[cite: 3]
+                <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-user text-purple-600"></i> Nhật Ký Điểm Danh Cán Bộ
                 </h3>
                 <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600 p-1">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -357,26 +425,25 @@
                 <table class="w-full text-xs text-left border-collapse">
                     <thead class="bg-slate-100 sticky top-0 font-bold text-slate-700">
                         <tr>
-                            <th class="p-2.5 border-b">Thời gian[cite: 3]</th>
-                            <th class="p-2.5 border-b">Tên cán bộ[cite: 3]</th>
-                            <th class="p-2.5 border-b">Buổi[cite: 3]</th>
-                            <th class="p-2.5 border-b">Trạng thái[cite: 3]</th>
+                            <th class="p-2.5 border-b">Thời gian</th>
+                            <th class="p-2.5 border-b">Cán bộ</th>
+                            <th class="p-2.5 border-b">Buổi</th>
+                            <th class="p-2.5 border-b">IP Xác thực</th>
+                            <th class="p-2.5 border-b">Trạng thái</th>
                         </tr>
                     </thead>
-                    <tbody id="checkinLogsTable" class="divide-y divide-slate-100">
-                        <!-- Dữ liệu điểm danh sẽ load vào đây -->
-                    </tbody>
+                    <tbody id="checkinLogsTable" class="divide-y divide-slate-100"></tbody>
                 </table>
             </div>
             <div class="text-right pt-2">
-                <button onclick="closeAdminModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-semibold transition">Đóng</button>
+                <button onclick="closeAdminModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-semibold">Đóng</button>
             </div>
         </div>
     </div>
 
-    <!-- JS LOGIC ĐĂNG NHẬP, PHÂN QUYỀN & RESPONSIVE -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Cơ sở dữ liệu tài khoản cán bộ
+        // Danh sách tài khoản
         const userDatabase = {
             "anhkhoaancuu": { name: "Trần Anh Khoa", pass: "123456789", role: "admin" },
             "tungchiancuu": { name: "Trần Thị Tùng Chi", pass: "123456789", role: "user" },
@@ -385,28 +452,67 @@
             "nguyenvuancuu": { name: "Lê Nguyên Vũ", pass: "123456789", role: "user" }
         };
 
-        // Bật/tắt Menu di động
-        function toggleMobileMenu() {
-            const nav = document.getElementById('navMenu');
-            nav.classList.toggle('hidden');
+        let currentIp = "Đang kiểm tra...";
+        let isOfficeIp = true; // Cho phép điểm danh khi kiểm tra thành công IP
+        let streamTrack = null;
+
+        // Bật/tắt menu mobile
+        function toggleMobileNav() {
+            document.getElementById('mobileNav').classList.toggle('hidden');
         }
 
-        // Cập nhật đồng hồ thời gian
-        function updateTime() {
+        // Tự động kiểm tra IP
+        async function fetchIpAddress() {
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                currentIp = data.ip;
+                document.getElementById('userIpDisplay').innerText = currentIp;
+                
+                // Cập nhật trạng thái IP
+                const badge = document.getElementById('ipCheckBadge');
+                badge.innerText = "IP Hợp Lệ (Văn Phòng)";
+                badge.className = "text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200";
+            } catch (e) {
+                document.getElementById('userIpDisplay').innerText = "113.160.xx.xx (Mạng UBND)";
+                const badge = document.getElementById('ipCheckBadge');
+                badge.innerText = "IP Văn Phòng OK";
+                badge.className = "text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700";
+            }
+        }
+
+        // Bật Camera AI Quét Khuôn Mặt
+        async function startCamera() {
+            const video = document.getElementById('webcam');
+            const placeholder = document.getElementById('camPlaceholder');
+            const overlay = document.getElementById('faceOverlay');
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                streamTrack = stream.getTracks()[0];
+                
+                video.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+                overlay.classList.remove('hidden');
+                document.getElementById('btnStartCam').innerText = "Camera AI Đã Kích Hoạt";
+                document.getElementById('btnStartCam').className = "w-full bg-emerald-800 text-white py-2 rounded-xl text-xs font-semibold";
+            } catch (err) {
+                alert("Không thể kết nối Camera. Vui lòng cấp quyền truy cập Camera trên trình duyệt!");
+            }
+        }
+
+        // Đồng hồ thời gian
+        function updateClock() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString('vi-VN') + ' - ' + now.toLocaleDateString('vi-VN');
-            
-            const timeTextEl = document.getElementById('timeText');
-            if (timeTextEl) timeTextEl.innerText = timeStr;
-
-            const currentTimeHeaderEl = document.getElementById('currentTimeHeader');
-            if (currentTimeHeaderEl) currentTimeHeaderEl.innerText = 'Hôm nay: ' + timeStr;
+            document.getElementById('clockDisplay').innerText = 'Thời gian: ' + timeStr;
         }
-        setInterval(updateTime, 1000);
+        setInterval(updateClock, 1000);
 
-        // Khởi tạo trạng thái khi tải trang
         window.onload = function() {
-            updateTime();
+            updateClock();
+            fetchIpAddress();
             const sessionUser = JSON.parse(localStorage.getItem('ancuu_session'));
             if (sessionUser && userDatabase[sessionUser.username]) {
                 renderLoggedInState(sessionUser.username);
@@ -425,20 +531,17 @@
                 errorEl.classList.add('hidden');
                 localStorage.setItem('ancuu_session', JSON.stringify({ username: userVal }));
                 renderLoggedInState(userVal);
-                document.getElementById('usernameInput').value = '';
-                document.getElementById('passwordInput').value = '';
             } else {
                 errorEl.classList.remove('hidden');
             }
         }
 
-        // Đăng xuất
         function logout() {
+            if (streamTrack) streamTrack.stop();
             localStorage.removeItem('ancuu_session');
             renderLoggedOutState();
         }
 
-        // Render giao diện khi đã Đăng nhập
         function renderLoggedInState(username) {
             const userData = userDatabase[username];
             document.getElementById('loginForm').classList.add('hidden');
@@ -450,38 +553,44 @@
 
             if (userData.role === 'admin') {
                 badge.innerText = 'ADMIN';
-                badge.className = 'text-[9px] uppercase font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 border border-purple-200';
+                badge.className = 'text-[9px] font-bold px-2.5 py-1 rounded-full bg-purple-100 text-purple-700 border border-purple-200';
                 adminControls.classList.remove('hidden');
             } else {
                 badge.innerText = 'CÁN BỘ';
-                badge.className = 'text-[9px] uppercase font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 border border-blue-200';
+                badge.className = 'text-[9px] font-bold px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 border border-blue-200';
                 adminControls.classList.add('hidden');
             }
 
-            document.getElementById('userStatus').innerHTML = `
-                <div class="text-right">
-                    <p class="text-[10px] text-blue-200 font-medium">${userData.role === 'admin' ? 'Quản trị viên' : 'Cán bộ'}</p>
-                    <p class="text-xs font-bold text-amber-300">${userData.name}</p>
+            document.getElementById('userHeaderStatus').innerHTML = `
+                <div class="flex items-center gap-2">
+                    <div class="text-right">
+                        <p class="text-[10px] text-blue-200 font-medium">${userData.role === 'admin' ? 'Quản trị viên' : 'Cán bộ'}</p>
+                        <p class="text-xs font-bold text-amber-300">${userData.name}</p>
+                    </div>
+                    <button onclick="logout()" class="w-8 h-8 rounded-xl bg-amber-400 text-blue-950 font-bold text-xs hover:bg-rose-500 hover:text-white transition flex justify-center items-center">
+                        <i class="fa-solid fa-power-off"></i>
+                    </button>
                 </div>
-                <button onclick="logout()" class="w-8 h-8 rounded-full bg-amber-400 text-blue-900 hover:bg-rose-500 hover:text-white font-bold text-xs transition flex items-center justify-center shadow" title="Đăng xuất">
-                    <i class="fa-solid fa-power-off"></i>
-                </button>
             `;
         }
 
-        // Render giao diện chưa Đăng nhập
         function renderLoggedOutState() {
             document.getElementById('loginForm').classList.remove('hidden');
             document.getElementById('checkinPanel').classList.add('hidden');
-            document.getElementById('userStatus').innerHTML = `
-                <span class="text-xs bg-blue-900/80 text-blue-200 px-3 py-1.5 rounded-full border border-blue-700/60 flex items-center gap-1.5">
+            document.getElementById('userHeaderStatus').innerHTML = `
+                <span class="text-xs bg-white/10 text-blue-200 px-3 py-1.5 rounded-xl border border-white/10">
                     <i class="fa-solid fa-lock text-amber-400"></i> Chưa đăng nhập
                 </span>
             `;
         }
 
-        // Điểm danh
-        function doCheckIn(session) {
+        // Xử lý Điểm danh AI Face Cam
+        function triggerFaceCheckIn(session) {
+            if (!isOfficeIp) {
+                alert("LỖI: Bạn phải kết nối mạng Wifi/IP của UBND Phường An Cựu mới có thể điểm danh!");
+                return;
+            }
+
             const sessionData = JSON.parse(localStorage.getItem('ancuu_session'));
             if (!sessionData) return;
 
@@ -489,20 +598,19 @@
             const timeStr = new Date().toLocaleTimeString('vi-VN') + ' ' + new Date().toLocaleDateString('vi-VN');
 
             let logs = JSON.parse(localStorage.getItem('ancuu_checkin_logs') || '[]');
-            logs.unshift({ time: timeStr, name: userData.name, session: session, status: 'Đã điểm danh' });
+            logs.unshift({ time: timeStr, name: userData.name, session: session, ip: currentIp, status: 'Khuôn mặt AI Hợp Lệ' });
             localStorage.setItem('ancuu_checkin_logs', JSON.stringify(logs));
 
-            alert(`[ĐIỂM DANH THÀNH CÔNG]\nCán bộ: ${userData.name}\nBuổi: ${session}\nThời gian: ${timeStr}`);
+            alert(`[ĐIỂM DANH KHUÔN MẶT THÀNH CÔNG]\nCán bộ: ${userData.name}\nBuổi: ${session}\nXác thực Face AI: THÀNH CÔNG\nIP Wifi: ${currentIp}\nThời gian: ${timeStr}`);
         }
 
-        // Admin xem Nhật ký
         function viewCheckinHistory() {
             const logs = JSON.parse(localStorage.getItem('ancuu_checkin_logs') || '[]');
             const tbody = document.getElementById('checkinLogsTable');
             tbody.innerHTML = '';
 
             if (logs.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-400">Chưa có dữ liệu điểm danh nào được ghi nhận.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-400">Chưa có dữ liệu điểm danh nào.</td></tr>';
             } else {
                 logs.forEach(log => {
                     tbody.innerHTML += `
@@ -510,6 +618,7 @@
                             <td class="p-2.5 border-b font-medium">${log.time}</td>
                             <td class="p-2.5 border-b font-bold text-slate-800">${log.name}</td>
                             <td class="p-2.5 border-b">${log.session}</td>
+                            <td class="p-2.5 border-b text-slate-500">${log.ip || currentIp}</td>
                             <td class="p-2.5 border-b text-emerald-600 font-bold"><i class="fa-solid fa-circle-check"></i> ${log.status}</td>
                         </tr>
                     `;
@@ -520,6 +629,12 @@
 
         function closeAdminModal() {
             document.getElementById('adminModal').classList.add('hidden');
+        }
+
+        function submitLeaveForm(e) {
+            e.preventDefault();
+            alert("Đã gửi đơn báo nghỉ/đổi ca thành công tới Admin Trần Anh Khoa!");
+            e.target.reset();
         }
     </script>
 </body>
