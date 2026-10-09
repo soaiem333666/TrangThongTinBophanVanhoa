@@ -2,331 +2,439 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KhoaBhe Mobile - Cross Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bộ Phận Văn Hoá - Phường An Cựu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; -webkit-user-select: none; }
-        body { background: #000; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
-        
-        #game-frame {
-            width: 100vw;
-            height: 100vh;
-            max-width: 1280px;
-            max-height: 720px;
-            position: relative;
-            background: #000;
-            overflow: hidden;
-        }
-
-        .screen { position: absolute; width: 100%; height: 100%; top: 0; left: 0; display: none; flex-direction: column; }
-        .screen.active { display: flex; }
-
-        /* 1. MAN HINH DANG NHAP */
-        #login-screen {
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(10, 15, 30, 0.85)), 
-                        url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200') center/cover;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .logo-box { text-align: center; margin-top: 20px; }
-        .logo-title {
-            font-size: min(8vw, 48px); font-weight: 900; text-transform: uppercase;
-            background: linear-gradient(180deg, #ffffff 0%, #ffe600 40%, #b8860b 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
-        }
-        .logo-sub { font-size: min(4vw, 18px); letter-spacing: 4px; color: #e0e0e0; text-transform: uppercase; font-weight: bold; }
-
-        .login-btns { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; justify-content: center; }
-        .btn-main {
-            padding: 10px 25px; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer;
-            border: 2px solid rgba(255,255,255,0.4); color: #fff; text-shadow: 0 1px 2px #000;
-        }
-        .btn-guest { background: linear-gradient(180deg, #7f8c8d, #34495e); }
-        .btn-garena { background: linear-gradient(180deg, #e74c3c, #c0392b); }
-
-        /* 2. MAN HINH CHON TUONG */
-        #hero-screen { background: #0f172a; padding: 15px; justify-content: space-between; align-items: center; }
-        .hero-list { display: flex; gap: 15px; margin-top: 10px; width: 100%; justify-content: center; }
-        .hero-card {
-            width: 30%; max-width: 160px; height: 220px; border: 2px solid #334155; border-radius: 8px;
-            background-size: cover; background-position: center; cursor: pointer; position: relative;
-        }
-        .hero-card.selected { border-color: #f59e0b; box-shadow: 0 0 15px rgba(245, 158, 11, 0.6); }
-        .hero-info { position: absolute; bottom: 0; width: 100%; padding: 8px; background: rgba(0,0,0,0.8); text-align: center;}
-        .hero-name { font-size: 14px; font-weight: bold; color: #ffeb3b; }
-
-        /* 3. GAME CANVAS & HUD */
-        #battle-screen { position: relative; width: 100%; height: 100%; }
-        canvas { width: 100%; height: 100%; background: #1a2332; }
-        .hud-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-        
-        .stats-bar {
-            position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7);
-            padding: 5px 12px; border-radius: 6px; font-size: 12px; display: flex; gap: 10px; border: 1px solid #475569;
-        }
-
-        /* JOYSTICK CHO DIEN THOAI */
-        #joystick-zone {
-            position: absolute; bottom: 20px; left: 20px; width: 120px; height: 120px;
-            background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 50%; pointer-events: auto; touch-action: none;
-        }
-        #joystick-stick {
-            position: absolute; top: 35px; left: 35px; width: 50px; height: 50px;
-            background: rgba(245, 158, 11, 0.8); border-radius: 50%; pointer-events: none;
-        }
-
-        /* NUT CHIÊU THỨC DI DỘNG */
-        .skill-bar-mobile {
-            position: absolute; bottom: 15px; right: 15px; pointer-events: auto;
-            display: flex; gap: 10px; align-items: flex-end;
-        }
-        .btn-skill {
-            width: 55px; height: 55px; border-radius: 50%; background: #1e293b;
-            border: 2px solid #f59e0b; color: #fff; font-weight: bold; font-size: 12px;
-            display: flex; justify-content: center; align-items: center; cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.6);
-        }
-        .btn-skill:active { background: #d97706; transform: scale(0.9); }
-        .btn-attack { width: 70px; height: 70px; background: #dc2626; border-color: #fca5a5; font-size: 14px; }
+        .bg-custom { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 font-sans text-slate-800">
 
-<div id="game-frame">
-    <!-- MAN HINH DANG NHAP -->
-    <div id="login-screen" class="screen active">
-        <div style="font-size: 11px; border: 1px solid #d4af37; padding: 2px 8px; border-radius: 10px; color: #ffeb3b;">18+ | KhoaBhe Mobile Cross-Platform</div>
-        <div class="logo-box">
-            <h1 class="logo-title">KhoaBhe Mobile</h1>
-            <div class="logo-sub">Arena of Valor</div>
-        </div>
-        <div style="text-align: center;">
-            <div class="login-btns">
-                <button class="btn-main btn-guest" onclick="goToHeroSelect()">ĐĂNG NHẬP KHÁCH</button>
-                <button class="btn-main btn-garena" onclick="goToHeroSelect()">GARENA</button>
+    <!-- Header / Thanh điều hướng -->
+    <header class="bg-custom text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-landmark text-2xl text-yellow-400"></i>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">BỘ PHẬN VĂN HOÁ - XÃ HỘI</h1>
+                    <p class="text-xs text-blue-200">TT Dịch vụ Sự nghiệp công Phường An Cựu</p>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- MAN HINH CHON TUONG -->
-    <div id="hero-screen" class="screen">
-        <h3 style="color: #f59e0b; margin-top: 5px;">CHỌN TƯỚNG XUẤT TRẬN</h3>
-        <div class="hero-list">
-            <div class="hero-card selected" onclick="selectHero('valhein', this)" style="background-image: url('https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=300');">
-                <div class="hero-info"><div class="hero-name">Valhein</div></div>
-            </div>
-            <div class="hero-card" onclick="selectHero('krixi', this)" style="background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=300');">
-                <div class="hero-info"><div class="hero-name">Krixi</div></div>
-            </div>
-            <div class="hero-card" onclick="selectHero('arthur', this)" style="background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=300');">
-                <div class="hero-info"><div class="hero-name">Arthur</div></div>
+            <div id="userStatus" class="flex items-center space-x-3">
+                <!-- Nơi hiển thị trạng thái đăng nhập -->
             </div>
         </div>
-        <button class="btn-main btn-garena" style="width: 200px; margin-bottom: 10px;" onclick="startBattle()">VÀO TRẬN ĐẤU</button>
-    </div>
+    </header>
 
-    <!-- DAU TRUONG CANVAS -->
-    <div id="battle-screen" class="screen">
-        <canvas id="canvas"></canvas>
-        <div class="hud-overlay">
-            <div class="stats-bar">
-                <div>Tướng: <span id="hud-hero" style="color: #ffeb3b;">-</span></div>
-                <div>Kills: <span id="hud-kills" style="color: #22c55e;">0</span></div>
-            </div>
+    <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+        <!-- Cột trái: Đăng nhập & Điểm danh cán bộ -->
+        <div class="lg:col-span-1 space-y-6">
             
-            <!-- Joystick cho đtdđ -->
-            <div id="joystick-zone">
-                <div id="joystick-stick"></div>
+            <!-- Card 1: Form Đăng nhập & Bảng Điều Khiển Cán Bộ -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                <h2 class="font-bold text-slate-700 text-md mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-user-lock text-blue-600"></i> Tài Khoản Cán Bộ
+                </h2>
+
+                <!-- Form đăng nhập tài khoản + mật khẩu -->
+                <div id="loginForm" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Tên tài khoản:</label>
+                        <input type="text" id="usernameInput" placeholder="Nhập tài khoản (vd: anhkhoaancuu)" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Mật khẩu:</label>
+                        <input type="password" id="passwordInput" placeholder="Nhập mật khẩu" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <div id="loginError" class="text-xs text-rose-600 hidden font-medium">Tài khoản hoặc mật khẩu không chính xác!</div>
+                    <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg text-sm shadow transition flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập
+                    </button>
+                </div>
+
+                <!-- Bảng chức năng khi đã đăng nhập -->
+                <div id="checkinPanel" class="hidden space-y-4">
+                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100 relative">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-xs text-slate-500">Xin chào cán bộ:</p>
+                                <p id="currentUserName" class="font-bold text-blue-900 text-base"></p>
+                            </div>
+                            <span id="roleBadge" class="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full"></span>
+                        </div>
+                        <p id="currentTime" class="text-xs text-slate-500 mt-2 border-t border-blue-100 pt-1.5"></p>
+                    </div>
+
+                    <!-- Nút Điểm danh -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="doCheckIn('Sáng')" class="bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-lg text-xs font-semibold text-center shadow transition">
+                            <i class="fa-solid fa-sun block text-lg mb-1"></i> Điểm danh Sáng
+                        </button>
+                        <button onclick="doCheckIn('Chiều')" class="bg-amber-600 hover:bg-amber-700 text-white p-3 rounded-lg text-xs font-semibold text-center shadow transition">
+                            <i class="fa-solid fa-cloud-sun block text-lg mb-1"></i> Điểm danh Chiều
+                        </button>
+                    </div>
+
+                    <!-- Khu vực dành riêng cho Admin (Trần Anh Khoa) -->
+                    <div id="adminControls" class="hidden pt-2 border-t border-slate-200">
+                        <p class="text-xs font-bold text-purple-800 mb-2 flex items-center gap-1">
+                            <i class="fa-solid fa-user-shield text-purple-600"></i> Bảng quản trị Admin:
+                        </p>
+                        <button onclick="viewCheckinHistory()" class="w-full bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 py-2 rounded-lg text-xs font-medium transition mb-2 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-list-check"></i> Xem nhật ký điểm danh
+                        </button>
+                    </div>
+
+                    <button onclick="logout()" class="w-full text-slate-400 hover:text-rose-600 text-xs py-1 transition flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-power-off"></i> Đăng xuất tài khoản
+                    </button>
+                </div>
             </div>
 
-            <!-- Nút bấm chiêu cho mobile -->
-            <div class="skill-bar-mobile">
-                <button class="btn-skill" onclick="castSkill('Q')">C1 (Q)</button>
-                <button class="btn-skill" onclick="castSkill('W')">C2 (W)</button>
-                <button class="btn-skill" style="border-color: #ef4444;" onclick="castSkill('R')">R (Ulti)</button>
-                <button class="btn-skill btn-attack" onclick="castSkill('ATTACK')">ĐÁNH</button>
+            <!-- Card 2: Thông báo nhanh -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                <h2 class="font-bold text-slate-700 text-md mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-bell text-amber-500"></i> Thông Báo Bộ Phận
+                </h2>
+                <ul class="text-xs space-y-2.5 text-slate-600">
+                    <li class="p-2 bg-slate-50 rounded border-l-2 border-blue-500">
+                        <b>Chào cờ đầu tuần:</b> 7h30 Thứ Hai tập trung tại Ủy ban Phường.
+                    </li>
+                    <li class="p-2 bg-slate-50 rounded border-l-2 border-emerald-500">
+                        <b>Vệ sinh cơ quan:</b> Chiều Thứ Sáu dọn dẹp kho bãi vật tư VHXH.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Cột phải: Báo cáo Lịch làm việc tuần -->
+        <div class="lg:col-span-3 space-y-6">
+            
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 mb-4 border-b border-slate-100 gap-2">
+                    <div>
+                        <h2 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-week text-blue-600"></i> Báo Cáo Lịch Làm Việc Tuần
+                        </h2>
+                        <p class="text-xs text-slate-500">Cập nhật trực tiếp từ hệ thống Google Sheets</p>
+                    </div>
+                    <a href="https://docs.google.com/spreadsheets/d/1HEERG29ikaAdlv6DJpI9q6YclAKvOpfC60EpGOYSkfs/edit?usp=sharing" target="_blank" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-3 py-1.5 rounded-md transition flex items-center gap-1">
+                        <i class="fa-solid fa-file-excel text-emerald-600"></i> Mở File Gốc
+                    </a>
+                </div>
+
+                <!-- Bảng Lịch làm việc -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse min-w-[700px]">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 uppercase font-bold border-b border-slate-200">
+                                <th class="p-3 w-32 border-r">Cán Bộ</th>
+                                <th class="p-3 w-20 border-r">Buổi</th>
+                                <th class="p-3 border-r bg-blue-50/50">Thứ 2</th>
+                                <th class="p-3 border-r">Thứ 3</th>
+                                <th class="p-3 border-r">Thứ 4</th>
+                                <th class="p-3 border-r">Thứ 5</th>
+                                <th class="p-3 border-r">Thứ 6</th>
+                                <th class="p-3 border-r">Thứ 7</th>
+                                <th class="p-3">Chủ Nhật</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scheduleTableBody" class="divide-y divide-slate-200">
+                            <!-- Nguyễn Bỉnh Minh Khuê -->
+                            <tr>
+                                <td rowspan="2" class="p-3 font-semibold text-slate-800 bg-slate-50/50 border-r">Nguyễn Bỉnh Minh Khuê</td>
+                                <td class="p-2 font-medium text-amber-700 bg-amber-50/30 border-r">SÁNG</td>
+                                <td class="p-2 border-r">7h30: Chào cờ tại UB<br>8h: Làm việc tại Trung tâm</td>
+                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
+                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
+                                <td class="p-2 border-r">8h: Ngày Quốc tế Người cao tuổi tại NVH KV6</td>
+                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
+                                <td class="p-2 border-r">7h00: Khảo sát các tổ dân phố cùng Chủ tịch</td>
+                                <td class="p-2"></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-2 font-medium text-blue-700 bg-blue-50/30 border-r">CHIỀU</td>
+                                <td class="p-2 border-r">13h30: Sơ kết phát triển KT-XH</td>
+                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
+                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
+                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
+                                <td class="p-2 border-r">Lấy tin, viết bài tại UB</td>
+                                <td class="p-2 border-r"></td>
+                                <td class="p-2"></td>
+                            </tr>
+
+                            <!-- Hoàng Quốc Tuấn -->
+                            <tr>
+                                <td rowspan="2" class="p-3 font-semibold text-slate-800 bg-slate-50/50 border-r">Hoàng Quốc Tuấn</td>
+                                <td class="p-2 font-medium text-amber-700 bg-amber-50/30 border-r">SÁNG</td>
+                                <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc tại TT</td>
+                                <td class="p-2 border-r">Họp tại UBND</td>
+                                <td class="p-2 border-r">In GCN, làm Pano Lễ hội Quang Trung</td>
+                                <td class="p-2 border-r">Lập KH & dự trù kinh phí Trại sáng tác 2026</td>
+                                <td class="p-2 border-r">Thiết kế Pano, làm việc với Viettel</td>
+                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
+                                <td class="p-2"></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-2 font-medium text-blue-700 bg-blue-50/30 border-r">CHIỀU</td>
+                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
+                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
+                                <td class="p-2 border-r">Họp tại UBND "Quang Trung"</td>
+                                <td class="p-2 border-r">Lập KH & dự trù kinh phí Trại sáng tác 2026</td>
+                                <td class="p-2 border-r">Sắp kho bãi vật tư VHXH, vệ sinh</td>
+                                <td class="p-2 border-r"></td>
+                                <td class="p-2"></td>
+                            </tr>
+
+                            <!-- Lê Nguyên Vũ -->
+                            <tr>
+                                <td rowspan="2" class="p-3 font-semibold text-slate-800 bg-slate-50/50 border-r">Lê Nguyên Vũ</td>
+                                <td class="p-2 font-medium text-amber-700 bg-amber-50/30 border-r">SÁNG</td>
+                                <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc tại TT</td>
+                                <td class="p-2 border-r">Thanh quyết toán giải vật</td>
+                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
+                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
+                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
+                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
+                                <td class="p-2"></td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-2 font-medium text-blue-700 bg-blue-50/30 border-r">CHIỀU</td>
+                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
+                                <td class="p-2 border-r">Xây dựng báo cáo phát thanh</td>
+                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
+                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
+                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
+                                <td class="p-2 border-r"></td>
+                                <td class="p-2"></td>
+                            </tr>
+
+                            <!-- Trần Anh Khoa (Admin) -->
+                            <tr class="bg-purple-50/20">
+                                <td rowspan="2" class="p-3 font-semibold text-purple-900 bg-purple-50/50 border-r">
+                                    Trần Anh Khoa <span class="text-[10px] bg-purple-200 text-purple-800 px-1 rounded block w-fit mt-1">Admin</span>
+                                </td>
+                                <td class="p-2 font-medium text-amber-700 bg-amber-50/30 border-r">SÁNG</td>
+                                <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc tại TT</td>
+                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
+                                <td class="p-2 border-r">Kiểm tra hệ thống pano</td>
+                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
+                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
+                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
+                                <td class="p-2 bg-slate-100 text-slate-400 text-center">Nghỉ</td>
+                            </tr>
+                            <tr class="border-b bg-purple-50/20">
+                                <td class="p-2 font-medium text-blue-700 bg-blue-50/30 border-r">CHIỀU</td>
+                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
+                                <td class="p-2 border-r">Kiểm tra hệ thống pano</td>
+                                <td class="p-2 border-r">Kiểm tra hệ thống pano</td>
+                                <td class="p-2 border-r">Làm việc tại trung tâm</td>
+                                <td class="p-2 border-r">Sắp kho bãi vật tư, vệ sinh</td>
+                                <td class="p-2 bg-slate-100 text-slate-400 text-center border-r">Nghỉ</td>
+                                <td class="p-2 bg-slate-100 text-slate-400 text-center">Nghỉ</td>
+                            </tr>
+
+                            <!-- Trần Thị Tùng Chi -->
+                            <tr>
+                                <td rowspan="2" class="p-3 font-semibold text-slate-800 bg-slate-50/50 border-r">Trần Thị Tùng Chi</td>
+                                <td class="p-2 font-medium text-amber-700 bg-amber-50/30 border-r">SÁNG</td>
+                                <td class="p-2 border-r">7h30: Chào cờ UB<br>8h: Làm việc tại TT</td>
+                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
+                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
+                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
+                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
+                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
+                                <td class="p-2 bg-slate-100 text-slate-400 text-center">Nghỉ</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2 font-medium text-blue-700 bg-blue-50/30 border-r">CHIỀU</td>
+                                <td class="p-2 border-r">13h30: Sơ kết phát triển KT-XH</td>
+                                <td class="p-2 border-r">13h30: Lấy tin viết bài tại UB</td>
+                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
+                                <td class="p-2 border-r">Làm việc tại Trung tâm</td>
+                                <td class="p-2 border-r">Sắp kho bãi vật tư, vệ sinh</td>
+                                <td class="p-2 bg-slate-100 text-slate-400 text-center border-r">Nghỉ</td>
+                                <td class="p-2 bg-slate-100 text-slate-400 text-center">Nghỉ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal Xem lịch sử điểm danh (Dành cho Admin) -->
+    <div id="adminModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full p-6 space-y-4 shadow-xl">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-user text-purple-600"></i> Nhật Ký Điểm Danh Cán Bộ
+                </h3>
+                <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="max-h-80 overflow-y-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                    <thead class="bg-slate-100 sticky top-0">
+                        <tr>
+                            <th class="p-2 border">Thời gian</th>
+                            <th class="p-2 border">Tên cán bộ</th>
+                            <th class="p-2 border">Buổi</th>
+                            <th class="p-2 border">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody id="checkinLogsTable" class="divide-y">
+                        <!-- Dữ liệu điểm danh sẽ load vào đây -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-right pt-2">
+                <button onclick="closeAdminModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg text-xs font-semibold">Đóng</button>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    let selectedHero = 'valhein';
-    let canvas, ctx, gameLoop;
-
-    function showScreen(id) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
-
-    function goToHeroSelect() { showScreen('hero-screen'); }
-
-    function selectHero(heroName, el) {
-        selectedHero = heroName;
-        document.querySelectorAll('.hero-card').forEach(c => c.classList.remove('selected'));
-        el.classList.add('selected');
-    }
-
-    // Engine Game
-    let player = { x: 100, y: 180, radius: 15, speed: 3.5, color: '#3b82f6' };
-    let enemyCore = { x: 850, y: 180, radius: 35, hp: 2000, maxHp: 2000 };
-    let bullets = [], minions = [], kills = 0;
-    let joystickDir = { x: 0, y: 0 };
-    let keys = {};
-
-    function startBattle() {
-        showScreen('battle-screen');
-        canvas = document.getElementById('canvas');
-        canvas.width = 960;
-        canvas.height = 540;
-        ctx = canvas.getContext('2d');
-        document.getElementById('hud-hero').innerText = selectedHero.toUpperCase();
-
-        // Điểu khiển PC (Bàn phím)
-        window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
-        window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
-
-        // Khởi tạo Joystick cho Điện thoại
-        setupJoystick();
-
-        setInterval(spawnMinion, 5000);
-        gameLoop = setInterval(update, 1000 / 60);
-    }
-
-    function setupJoystick() {
-        const zone = document.getElementById('joystick-zone');
-        const stick = document.getElementById('joystick-stick');
-        let active = false;
-
-        const handleMove = (e) => {
-            if (!active) return;
-            const touch = e.touches ? e.touches[0] : e;
-            const rect = zone.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            let dx = touch.clientX - centerX;
-            let dy = touch.clientY - centerY;
-            let dist = Math.hypot(dx, dy);
-            let maxDist = 35;
-
-            if (dist > maxDist) {
-                dx = (dx / dist) * maxDist;
-                dy = (dy / dist) * maxDist;
-            }
-
-            stick.style.transform = `translate(${dx}px, ${dy}px)`;
-            joystickDir.x = dx / maxDist;
-            joystickDir.y = dy / maxDist;
+    <!-- JS Xử lý Đăng Nhập & Phân Quyền -->
+    <script>
+        // Cơ sở dữ liệu tài khoản
+        const userDatabase = {
+            "anhkhoaancuu": { name: "Trần Anh Khoa", pass: "123456789", role: "admin" },
+            "tungchiancuu": { name: "Trần Thị Tùng Chi", pass: "123456789", role: "user" },
+            "quoctuanancuu": { name: "Hoàng Quốc Tuấn", pass: "123456789", role: "user" },
+            "minhkhueancuu": { name: "Nguyễn Bỉnh Minh Khuê", pass: "123456789", role: "user" },
+            "nguyenvuancuu": { name: "Lê Nguyên Vũ", pass: "123456789", role: "user" }
         };
 
-        const handleEnd = () => {
-            active = false;
-            stick.style.transform = 'translate(0px, 0px)';
-            joystickDir = { x: 0, y: 0 };
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('vi-VN') + ' - ' + now.toLocaleDateString('vi-VN');
+            const el = document.getElementById('currentTime');
+            if (el) el.innerText = 'Bây giờ: ' + timeStr;
+        }
+        setInterval(updateTime, 1000);
+
+        // Kiểm tra phiên đăng nhập tự động khi tải trang
+        window.onload = function() {
+            updateTime();
+            const sessionUser = JSON.parse(localStorage.getItem('ancuu_session'));
+            if (sessionUser && userDatabase[sessionUser.username]) {
+                renderLoggedInState(sessionUser.username);
+            } else {
+                renderLoggedOutState();
+            }
         };
 
-        zone.addEventListener('touchstart', (e) => { active = true; handleMove(e); });
-        zone.addEventListener('touchmove', handleMove);
-        zone.addEventListener('touchend', handleEnd);
-    }
+        // Hàm Đăng Nhập
+        function handleLogin() {
+            const userVal = document.getElementById('usernameInput').value.trim();
+            const passVal = document.getElementById('passwordInput').value.trim();
+            const errorEl = document.getElementById('loginError');
 
-    function spawnMinion() {
-        minions.push({ x: enemyCore.x - 30, y: enemyCore.y + (Math.random() * 60 - 30), radius: 10, hp: 200, speed: 1.2 });
-    }
-
-    function castSkill(type) {
-        let size = type === 'R' ? 12 : 6;
-        let dmg = type === 'R' ? 250 : 80;
-        bullets.push({ x: player.x, y: player.y, dx: 7, dy: (Math.random() - 0.5) * 1.5, radius: size, damage: dmg, color: type === 'R' ? '#ef4444' : '#f59e0b' });
-    }
-
-    function update() {
-        // Di chuyển qua Bàn phím (PC)
-        if (keys['w'] || keys['arrowup']) player.y -= player.speed;
-        if (keys['s'] || keys['arrowdown']) player.y += player.speed;
-        if (keys['a'] || keys['arrowleft']) player.x -= player.speed;
-        if (keys['d'] || keys['arrowright']) player.x += player.speed;
-
-        // Di chuyển qua Joystick (Điện thoại)
-        player.x += joystickDir.x * player.speed;
-        player.y += joystickDir.y * player.speed;
-
-        // Giới hạn trong bản đồ
-        player.x = Math.max(player.radius, Math.min(canvas.width - player.radius, player.x));
-        player.y = Math.max(player.radius, Math.min(canvas.height - player.radius, player.y));
-
-        // Cập nhật Đạn
-        bullets.forEach((b, index) => {
-            b.x += b.dx; b.y += b.dy;
-            minions.forEach((m, mIdx) => {
-                if (Math.hypot(b.x - m.x, b.y - m.y) < b.radius + m.radius) {
-                    m.hp -= b.damage;
-                    bullets.splice(index, 1);
-                    if (m.hp <= 0) {
-                        minions.splice(mIdx, 1);
-                        kills++;
-                        document.getElementById('hud-kills').innerText = kills;
-                    }
-                }
-            });
-
-            if (Math.hypot(b.x - enemyCore.x, b.y - enemyCore.y) < b.radius + enemyCore.radius) {
-                enemyCore.hp -= b.damage;
-                bullets.splice(index, 1);
-                if (enemyCore.hp <= 0) {
-                    alert("VICTORY! BẠN ĐÃ CHIẾN THẮNG!");
-                    clearInterval(gameLoop);
-                    location.reload();
-                }
+            if (userDatabase[userVal] && userDatabase[userVal].pass === passVal) {
+                errorEl.classList.add('hidden');
+                // Lưu phiên đăng nhập tự động cho lần sau
+                localStorage.setItem('ancuu_session', JSON.stringify({ username: userVal }));
+                renderLoggedInState(userVal);
+                document.getElementById('usernameInput').value = '';
+                document.getElementById('passwordInput').value = '';
+            } else {
+                errorEl.classList.remove('hidden');
             }
-        });
+        }
 
-        minions.forEach(m => m.x -= m.speed);
-        render();
-    }
+        // Đăng xuất
+        function logout() {
+            localStorage.removeItem('ancuu_session');
+            renderLoggedOutState();
+        }
 
-    function render() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Cập nhật giao diện khi đã đăng nhập thành công
+        function renderLoggedInState(username) {
+            const userData = userDatabase[username];
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('checkinPanel').classList.remove('hidden');
+            document.getElementById('currentUserName').innerText = userData.name;
 
-        // Làn đường
-        ctx.fillStyle = '#242e42';
-        ctx.fillRect(0, 100, canvas.width, 160);
+            const badge = document.getElementById('roleBadge');
+            const adminControls = document.getElementById('adminControls');
 
-        // Nhà chính Địch
-        ctx.beginPath();
-        ctx.arc(enemyCore.x, enemyCore.y, enemyCore.radius, 0, Math.PI * 2);
-        ctx.fillStyle = '#ef4444';
-        ctx.fill();
+            if (userData.role === 'admin') {
+                badge.innerText = 'ADMIN';
+                badge.className = 'text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 border border-purple-200';
+                adminControls.classList.remove('hidden');
+            } else {
+                badge.innerText = 'CÁN BỘ';
+                badge.className = 'text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 border border-blue-200';
+                adminControls.classList.add('hidden');
+            }
 
-        // Lính
-        minions.forEach(m => {
-            ctx.beginPath();
-            ctx.arc(m.x, m.y, m.radius, 0, Math.PI * 2);
-            ctx.fillStyle = '#f87171';
-            ctx.fill();
-        });
+            document.getElementById('userStatus').innerHTML = `
+                <div class="text-right">
+                    <p class="text-xs text-blue-200">${userData.role === 'admin' ? 'Quản trị viên' : 'Cán bộ công tác'}</p>
+                    <p class="text-sm font-bold text-yellow-300">${userData.name}</p>
+                </div>
+                <div class="w-9 h-9 rounded-full ${userData.role === 'admin' ? 'bg-purple-500 text-white' : 'bg-yellow-400 text-blue-900'} font-bold flex items-center justify-center shadow">
+                    ${userData.name.charAt(0)}
+                </div>
+            `;
+        }
 
-        // Tướng
-        ctx.beginPath();
-        ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
-        ctx.fillStyle = player.color;
-        ctx.fill();
-        ctx.strokeStyle = '#f59e0b';
-        ctx.lineWidth = 2;
-        ctx.stroke();
+        // Giao diện khi chưa đăng nhập
+        function renderLoggedOutState() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('checkinPanel').classList.add('hidden');
+            document.getElementById('userStatus').innerHTML = `
+                <span class="text-xs bg-blue-800 text-blue-200 px-3 py-1.5 rounded-full border border-blue-700">
+                    <i class="fa-solid fa-lock"></i> Chưa đăng nhập
+                </span>
+            `;
+        }
 
-        // Đạn
-        bullets.forEach(b => {
-            ctx.beginPath();
-            ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
-            ctx.fillStyle = b.color;
-            ctx.fill();
-        });
-    }
-</script>
+        // Điểm danh
+        function doCheckIn(session) {
+            const sessionData = JSON.parse(localStorage.getItem('ancuu_session'));
+            const userData = userDatabase[sessionData.username];
+            const timeStr = new Date().toLocaleTimeString('vi-VN') + ' ' + new Date().toLocaleDateString('vi-VN');
+
+            // Lưu nhật ký vào LocalStorage
+            let logs = JSON.parse(localStorage.getItem('ancuu_checkin_logs') || '[]');
+            logs.unshift({ time: timeStr, name: userData.name, session: session, status: 'Đã điểm danh' });
+            localStorage.setItem('ancuu_checkin_logs', JSON.stringify(logs));
+
+            alert(`[ĐIỂM DANH THÀNH CÔNG]\nCán bộ: ${userData.name}\nBuổi: ${session}\nThời gian: ${timeStr}`);
+        }
+
+        // Chức năng Admin xem nhật ký
+        function viewCheckinHistory() {
+            const logs = JSON.parse(localStorage.getItem('ancuu_checkin_logs') || '[]');
+            const tbody = document.getElementById('checkinLogsTable');
+            tbody.innerHTML = '';
+
+            if (logs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-3 text-center text-slate-400">Chưa có dữ liệu điểm danh nào</td></tr>';
+            } else {
+                logs.forEach(log => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td class="p-2 border">${log.time}</td>
+                            <td class="p-2 border font-medium">${log.name}</td>
+                            <td class="p-2 border">${log.session}</td>
+                            <td class="p-2 border text-emerald-600 font-semibold">${log.status}</td>
+                        </tr>
+                    `;
+                });
+            }
+            document.getElementById('adminModal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.add('hidden');
+        }
+    </script>
 </body>
 </html>
